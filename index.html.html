@@ -1,0 +1,2506 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>🇨🇳 Voyage Chine — Nov 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red:    #C0392B;
+  --gold:   #D4A843;
+  --ink:    #1A1208;
+  --paper:  #F5F0E8;
+  --warm:   #EDE8DC;
+  --smoke:  #7A7060;
+  --white:  #FDFAF5;
+  --card:   rgba(255,252,245,0.92);
+  --shadow: 0 4px 24px rgba(26,18,8,0.13);
+  --radius: 16px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── COVER ─────────────────────────────── */
+#cover {
+  min-height: 100dvh;
+  background: var(--ink);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+  padding: 32px 24px 48px;
+}
+
+.cover-pattern {
+  position: absolute; inset: 0;
+  background-image:
+    repeating-linear-gradient(45deg, rgba(212,168,67,.06) 0, rgba(212,168,67,.06) 1px, transparent 0, transparent 50%),
+    repeating-linear-gradient(-45deg, rgba(192,57,43,.04) 0, rgba(192,57,43,.04) 1px, transparent 0, transparent 50%);
+  background-size: 32px 32px;
+}
+
+.cover-circle {
+  position: absolute;
+  width: 420px; height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(192,57,43,.18) 0%, transparent 70%);
+  top: -80px; right: -100px;
+}
+.cover-circle2 {
+  position: absolute;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,168,67,.12) 0%, transparent 70%);
+  bottom: 20px; left: -80px;
+}
+
+.cover-content { position: relative; z-index: 1; text-align: center; max-width: 380px; }
+
+.cover-flag { font-size: 56px; margin-bottom: 12px; display: block; animation: float 3s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+.cover-eyebrow {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px; font-weight: 500; letter-spacing: 3px;
+  color: var(--gold); text-transform: uppercase; margin-bottom: 16px;
+}
+
+.cover-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(38px, 10vw, 52px);
+  font-weight: 700; color: var(--white);
+  line-height: 1.1; margin-bottom: 8px;
+}
+.cover-title span { color: var(--gold); font-style: italic; }
+
+.cover-sub {
+  font-size: 14px; color: rgba(253,250,245,.55);
+  margin-bottom: 32px; font-weight: 300;
+}
+
+.trip-stats {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 1px; background: rgba(255,255,255,.08);
+  border-radius: 12px; overflow: hidden;
+  margin-bottom: 36px;
+}
+.stat {
+  background: rgba(255,255,255,.04);
+  padding: 14px 8px; text-align: center;
+}
+.stat-num { font-size: 22px; font-weight: 700; color: var(--gold); display: block; }
+.stat-label { font-size: 10px; color: rgba(253,250,245,.45); text-transform: uppercase; letter-spacing: 1px; }
+
+.route-pills {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  justify-content: center; margin-bottom: 40px;
+}
+.pill {
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 100px; padding: 6px 14px;
+  font-size: 12px; color: rgba(253,250,245,.7);
+  display: flex; align-items: center; gap: 6px;
+}
+.pill-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--red); }
+
+.btn-start {
+  background: var(--red);
+  color: white; border: none;
+  padding: 16px 40px; border-radius: 100px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px; font-weight: 500;
+  cursor: pointer; letter-spacing: 0.5px;
+  box-shadow: 0 8px 32px rgba(192,57,43,.4);
+  transition: transform .2s, box-shadow .2s;
+}
+.btn-start:active { transform: scale(.97); box-shadow: 0 4px 16px rgba(192,57,43,.4); }
+
+/* ── APP SHELL ─────────────────────────── */
+#app { display: none; flex-direction: column; min-height: 100dvh; }
+
+/* TOP NAV */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--ink);
+  padding: 14px 20px 10px;
+  display: flex; align-items: center; gap: 12px;
+}
+.topbar-back {
+  background: rgba(255,255,255,.08); border: none;
+  width: 36px; height: 36px; border-radius: 50%;
+  color: white; font-size: 18px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.topbar-city {
+  flex: 1;
+  font-family: 'Playfair Display', serif;
+  font-size: 17px; color: white; font-weight: 700;
+}
+.topbar-date { font-size: 11px; color: var(--gold); font-weight: 500; letter-spacing: .5px; }
+
+/* CITY SELECTOR */
+#city-view { display: none; }
+#city-view.active { display: block; }
+
+.city-header {
+  position: relative; overflow: hidden;
+  min-height: 200px;
+  display: flex; flex-direction: column;
+  justify-content: flex-end; padding: 24px 20px 20px;
+}
+.city-bg {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  filter: brightness(.55);
+}
+.city-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 30%, rgba(26,18,8,.85));
+}
+.city-header-content { position: relative; z-index: 1; }
+.city-emoji { font-size: 36px; }
+.city-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px; font-weight: 700; color: white;
+  line-height: 1;
+}
+.city-dates { font-size: 13px; color: rgba(255,255,255,.65); margin-top: 4px; }
+
+.city-weather-bar {
+  background: var(--ink); color: white;
+  padding: 14px 20px;
+  display: flex; gap: 20px; align-items: center;
+  font-size: 13px;
+}
+.weather-temp { font-size: 20px; font-weight: 700; color: var(--gold); }
+.weather-desc { color: rgba(255,255,255,.6); font-size: 12px; }
+.weather-tips { font-size: 11px; color: rgba(255,255,255,.45); margin-top: 2px; }
+
+/* DAYS LIST */
+.days-list { padding: 16px 16px 100px; display: flex; flex-direction: column; gap: 10px; }
+
+.day-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: transform .15s;
+  border: 1px solid rgba(26,18,8,.06);
+}
+.day-card:active { transform: scale(.985); }
+
+.day-card-header {
+  padding: 14px 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+.day-num {
+  width: 42px; height: 42px; border-radius: 12px;
+  background: var(--ink); color: var(--gold);
+  font-family: 'Playfair Display', serif;
+  font-size: 18px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.day-num.tampon { background: var(--smoke); }
+.day-card-info { flex: 1; }
+.day-card-title { font-size: 14px; font-weight: 500; }
+.day-card-meta { font-size: 11px; color: var(--smoke); margin-top: 2px; }
+.day-card-tag {
+  font-size: 10px; padding: 3px 8px; border-radius: 100px;
+  font-weight: 500;
+}
+.tag-tampon { background: rgba(122,112,96,.12); color: var(--smoke); }
+.tag-visite { background: rgba(192,57,43,.1); color: var(--red); }
+.tag-excursion { background: rgba(212,168,67,.15); color: #8B6914; }
+
+.day-card-preview {
+  padding: 0 16px 14px;
+  display: flex; gap: 6px; flex-wrap: wrap;
+}
+.preview-pill {
+  font-size: 11px; color: var(--smoke);
+  background: var(--warm); padding: 3px 8px;
+  border-radius: 100px;
+}
+
+/* DAY DETAIL VIEW */
+#day-view { display: none; }
+#day-view.active { display: block; }
+
+.day-hero {
+  background: var(--ink); padding: 20px 20px 16px;
+}
+.day-hero-num {
+  font-size: 11px; color: var(--gold);
+  text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px;
+}
+.day-hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px; color: white; font-weight: 700;
+  line-height: 1.2;
+}
+.day-hero-date { font-size: 13px; color: rgba(255,255,255,.45); margin-top: 6px; }
+
+.day-sections { padding: 16px 16px 100px; display: flex; flex-direction: column; gap: 20px; }
+
+.section-label {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--smoke);
+  font-weight: 500; margin-bottom: 10px;
+}
+.section-label::after {
+  content: ''; flex: 1; height: 1px;
+  background: rgba(26,18,8,.08);
+}
+
+.activity-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(26,18,8,.07);
+  border: 1px solid rgba(26,18,8,.05);
+  margin-bottom: 10px;
+}
+
+.activity-img {
+  width: 100%; height: 160px;
+  object-fit: cover;
+  background: var(--warm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 48px;
+  position: relative; overflow: hidden;
+}
+.activity-img img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+.activity-img-emoji {
+  width: 100%; height: 160px;
+  background: linear-gradient(135deg, var(--warm) 0%, var(--paper) 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 52px;
+}
+
+.activity-body { padding: 14px 16px; }
+
+.activity-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px; font-weight: 700;
+  margin-bottom: 6px; line-height: 1.3;
+}
+.activity-desc { font-size: 13px; color: var(--smoke); line-height: 1.5; margin-bottom: 12px; }
+
+.activity-meta {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;
+}
+.meta-chip {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 11px; padding: 4px 10px; border-radius: 100px;
+  font-weight: 500;
+}
+.chip-time { background: rgba(26,18,8,.06); color: var(--ink); }
+.chip-price { background: rgba(212,168,67,.12); color: #8B6914; }
+.chip-free { background: rgba(34,139,34,.1); color: #1a6b1a; }
+.chip-transport { background: rgba(60,100,180,.1); color: #2a4fa0; }
+
+.btn-maps {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%;
+  background: var(--ink); color: white;
+  border: none; border-radius: 10px;
+  padding: 11px; font-size: 13px; font-weight: 500;
+  cursor: pointer; text-decoration: none;
+  font-family: 'DM Sans', sans-serif;
+  transition: background .2s;
+}
+.btn-maps:active { background: #333; }
+.btn-maps-icon { font-size: 16px; }
+
+/* TRANSPORT CARD */
+.transport-card {
+  background: rgba(26,18,8,.04);
+  border-radius: 12px; padding: 14px 16px;
+  border: 1px dashed rgba(26,18,8,.12);
+  margin-bottom: 10px;
+}
+.transport-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+.transport-detail { font-size: 12px; color: var(--smoke); line-height: 1.6; }
+
+/* TIPS CARD */
+.tips-card {
+  background: linear-gradient(135deg, rgba(212,168,67,.08), rgba(212,168,67,.02));
+  border: 1px solid rgba(212,168,67,.25);
+  border-radius: 12px; padding: 14px 16px;
+}
+.tips-title { font-size: 12px; font-weight: 600; color: #8B6914; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.tips-list { font-size: 12px; color: var(--smoke); line-height: 1.7; }
+.tips-list li { margin-left: 16px; }
+
+/* CHECKLIST CARD */
+.checklist-card {
+  background: rgba(192,57,43,.04);
+  border: 1px solid rgba(192,57,43,.15);
+  border-radius: 12px; padding: 14px 16px;
+}
+.checklist-title { font-size: 12px; font-weight: 600; color: var(--red); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.checklist-item {
+  display: flex; align-items: flex-start; gap: 8px;
+  font-size: 12px; color: var(--smoke);
+  padding: 4px 0; border-bottom: 1px solid rgba(26,18,8,.04);
+  cursor: pointer; transition: opacity .2s;
+}
+.checklist-item:last-child { border-bottom: none; }
+.check-box {
+  width: 16px; height: 16px; border-radius: 4px;
+  border: 1.5px solid rgba(192,57,43,.35);
+  flex-shrink: 0; margin-top: 1px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; transition: background .2s, border-color .2s;
+}
+.checklist-item.done .check-box { background: var(--red); border-color: var(--red); color: white; }
+.checklist-item.done span { text-decoration: line-through; opacity: .5; }
+
+/* BOTTOM NAV */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--ink);
+  display: flex;
+  z-index: 200;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.nav-btn {
+  flex: 1; padding: 14px 8px 12px;
+  background: none; border: none;
+  color: rgba(255,255,255,.4);
+  font-size: 20px; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  font-family: 'DM Sans', sans-serif;
+  transition: color .2s;
+}
+.nav-btn span { font-size: 10px; letter-spacing: .3px; }
+.nav-btn.active { color: var(--gold); }
+
+/* CITY LIST VIEW */
+#home-view { display: none; }
+#home-view.active { display: block; }
+
+.home-header {
+  background: var(--ink); padding: 20px 20px 24px;
+  position: relative; overflow: hidden;
+}
+.home-header::after {
+  content: ''; position: absolute;
+  width: 200px; height: 200px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(192,57,43,.2) 0%, transparent 70%);
+  top: -60px; right: -40px;
+}
+.home-subtitle { font-size: 11px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+.home-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px; color: white; font-weight: 700;
+}
+.home-meta { font-size: 12px; color: rgba(255,255,255,.45); margin-top: 6px; }
+
+.cities-grid { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+
+.city-card {
+  border-radius: var(--radius); overflow: hidden;
+  box-shadow: var(--shadow);
+  cursor: pointer; transition: transform .15s;
+  position: relative; min-height: 100px;
+  display: flex; align-items: flex-end;
+  background: var(--ink);
+}
+.city-card:active { transform: scale(.985); }
+.city-card-bg {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  filter: brightness(.5);
+  transition: filter .3s;
+}
+.city-card:active .city-card-bg { filter: brightness(.4); }
+.city-card-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(26,18,8,.9) 0%, transparent 60%);
+}
+.city-card-content { position: relative; z-index: 1; padding: 16px; width: 100%; }
+.city-card-emoji { font-size: 22px; margin-bottom: 4px; display: block; }
+.city-card-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; color: white; font-weight: 700; line-height: 1;
+}
+.city-card-dates { font-size: 11px; color: rgba(255,255,255,.55); margin-top: 4px; }
+.city-card-days {
+  position: absolute; top: 12px; right: 12px;
+  background: rgba(212,168,67,.2);
+  border: 1px solid rgba(212,168,67,.3);
+  border-radius: 8px; padding: 4px 10px;
+  font-size: 11px; color: var(--gold); font-weight: 600;
+}
+
+/* SEARCH */
+.search-bar {
+  padding: 12px 16px;
+  background: var(--paper);
+  position: sticky; top: 56px; z-index: 50;
+  border-bottom: 1px solid rgba(26,18,8,.08);
+}
+.search-input {
+  width: 100%;
+  background: white; border: 1px solid rgba(26,18,8,.1);
+  border-radius: 10px; padding: 10px 14px 10px 36px;
+  font-size: 14px; font-family: 'DM Sans', sans-serif;
+  outline: none; color: var(--ink);
+  position: relative;
+}
+.search-wrap { position: relative; }
+.search-icon {
+  position: absolute; left: 12px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 15px; color: var(--smoke); pointer-events: none;
+}
+
+/* INFO/PRACTICAL VIEW */
+#info-view { display: none; }
+#info-view.active { display: block; }
+
+.info-header { background: var(--ink); padding: 20px 20px 24px; }
+.info-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px; color: white; font-weight: 700;
+}
+.info-subtitle { font-size: 12px; color: rgba(255,255,255,.45); margin-top: 4px; }
+
+.info-sections { padding: 16px 16px 100px; }
+.info-section { margin-bottom: 24px; }
+.info-section-title {
+  font-size: 12px; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--smoke);
+  font-weight: 600; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.info-section-title::after { content: ''; flex: 1; height: 1px; background: rgba(26,18,8,.08); }
+
+.info-table {
+  width: 100%; border-collapse: collapse;
+  background: var(--card); border-radius: 12px;
+  overflow: hidden; box-shadow: var(--shadow);
+  font-size: 12px;
+}
+.info-table th {
+  background: var(--ink); color: var(--gold);
+  padding: 10px 12px; text-align: left;
+  font-weight: 600; font-size: 11px;
+  text-transform: uppercase; letter-spacing: .5px;
+}
+.info-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(26,18,8,.05);
+  vertical-align: top; color: var(--ink);
+  line-height: 1.5;
+}
+.info-table tr:last-child td { border-bottom: none; }
+.info-table tr:nth-child(even) td { background: rgba(26,18,8,.015); }
+
+.app-item {
+  background: var(--card); border-radius: 12px;
+  padding: 12px 14px; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 12px;
+  box-shadow: 0 2px 8px rgba(26,18,8,.05);
+}
+.app-icon { font-size: 28px; flex-shrink: 0; }
+.app-name { font-size: 14px; font-weight: 600; }
+.app-desc { font-size: 11px; color: var(--smoke); margin-top: 2px; }
+.app-badge {
+  margin-left: auto; font-size: 10px; padding: 3px 8px;
+  border-radius: 100px; font-weight: 600; flex-shrink: 0;
+}
+.badge-critical { background: rgba(192,57,43,.1); color: var(--red); }
+.badge-useful { background: rgba(212,168,67,.12); color: #8B6914; }
+.badge-optional { background: rgba(26,18,8,.06); color: var(--smoke); }
+
+.warning-banner {
+  background: rgba(192,57,43,.07);
+  border: 1px solid rgba(192,57,43,.2);
+  border-radius: 12px; padding: 14px 16px;
+  margin-bottom: 12px;
+  font-size: 13px; color: var(--ink);
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.warning-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+/* SCROLL */
+::-webkit-scrollbar { display: none; }
+* { scrollbar-width: none; }
+
+/* TRANSITIONS */
+.view-transition { animation: fadeSlide .25s ease-out; }
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* DIVIDER */
+.section-divider {
+  height: 1px; background: rgba(26,18,8,.08);
+  margin: 4px 0 16px;
+}
+
+.tampon-banner {
+  background: rgba(122,112,96,.07);
+  border: 1px solid rgba(122,112,96,.15);
+  border-radius: 12px; padding: 12px 16px;
+  font-size: 12px; color: var(--smoke);
+  margin-bottom: 12px; line-height: 1.6;
+}
+.tampon-banner strong { color: var(--ink); }
+
+/* Safe area helpers */
+.pb-safe { padding-bottom: calc(80px + env(safe-area-inset-bottom)); }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ COVER ═══════════════ -->
+<div id="cover">
+  <div class="cover-pattern"></div>
+  <div class="cover-circle"></div>
+  <div class="cover-circle2"></div>
+  <div class="cover-content">
+    <span class="cover-flag">🐉</span>
+    <div class="cover-eyebrow">Carnet de voyage</div>
+    <h1 class="cover-title">Chine &amp;<br><span>Hong Kong</span></h1>
+    <p class="cover-sub">8 – 27 novembre 2026 · 4 voyageurs</p>
+
+    <div class="trip-stats">
+      <div class="stat"><span class="stat-num">20</span><span class="stat-label">Jours</span></div>
+      <div class="stat"><span class="stat-num">6</span><span class="stat-label">Villes</span></div>
+      <div class="stat"><span class="stat-num">4</span><span class="stat-label">Voyageurs</span></div>
+    </div>
+
+    <div class="route-pills">
+      <div class="pill"><span class="pill-dot"></span>Hong Kong</div>
+      <div class="pill"><span class="pill-dot"></span>Chongqing</div>
+      <div class="pill"><span class="pill-dot"></span>Xi'an</div>
+      <div class="pill"><span class="pill-dot"></span>Beijing</div>
+      <div class="pill"><span class="pill-dot"></span>Shanghai</div>
+    </div>
+
+    <button class="btn-start" onclick="openApp()">Ouvrir le carnet →</button>
+  </div>
+</div>
+
+<!-- ═══════════════ APP SHELL ═══════════════ -->
+<div id="app">
+
+  <!-- TOP BAR -->
+  <div class="topbar" id="topbar">
+    <button class="topbar-back" id="backBtn" onclick="goBack()">‹</button>
+    <div>
+      <div class="topbar-city" id="topbarCity">Voyage Chine</div>
+      <div class="topbar-date" id="topbarDate">Nov 2026</div>
+    </div>
+  </div>
+
+  <!-- ── HOME VIEW ── -->
+  <div id="home-view">
+    <div class="home-header">
+      <div class="home-subtitle">Itinéraire complet</div>
+      <div class="home-title">6 villes, 20 jours</div>
+      <div class="home-meta">4 voyageurs · 08 – 27 novembre 2026</div>
+    </div>
+
+    <div class="cities-grid" id="citiesGrid"></div>
+  </div>
+
+  <!-- ── CITY VIEW ── -->
+  <div id="city-view">
+    <div class="city-header" id="cityHeader">
+      <div class="city-bg" id="cityBg"></div>
+      <div class="city-overlay"></div>
+      <div class="city-header-content">
+        <div class="city-emoji" id="cityEmoji"></div>
+        <div class="city-name" id="cityName"></div>
+        <div class="city-dates" id="cityDates"></div>
+      </div>
+    </div>
+    <div class="city-weather-bar" id="cityWeather"></div>
+    <div class="days-list" id="daysList"></div>
+  </div>
+
+  <!-- ── DAY VIEW ── -->
+  <div id="day-view">
+    <div class="day-hero">
+      <div class="day-hero-num" id="dayHeroNum"></div>
+      <div class="day-hero-title" id="dayHeroTitle"></div>
+      <div class="day-hero-date" id="dayHeroDate"></div>
+    </div>
+    <div class="day-sections" id="daySections"></div>
+  </div>
+
+  <!-- ── INFO VIEW ── -->
+  <div id="info-view">
+    <div class="info-header">
+      <div class="info-title">Infos pratiques</div>
+      <div class="info-subtitle">Transport, paiement, apps essentielles</div>
+    </div>
+    <div class="info-sections" id="infoSections"></div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <button class="nav-btn active" id="nav-home" onclick="showView('home')">
+      🗺️<span>Villes</span>
+    </button>
+    <button class="nav-btn" id="nav-info" onclick="showView('info')">
+      ℹ️<span>Pratique</span>
+    </button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════
+
+const CITIES = [
+  {
+    id: 'hk1',
+    name: 'Hong Kong',
+    emoji: '🇭🇰',
+    dates: '08 – 11 novembre 2026',
+    daysLabel: '4 jours',
+    bg: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80',
+    weather: { temp: '22–26°C', desc: 'Excellent — sec et ensoleillé', tips: 'T-shirt + veste légère le soir · Chaussures de marche' },
+    hotel: { rec: 'Tsim Sha Tsui (TST)', why: 'Vue Harbour, MTR direct, tout à pied' },
+    days: ['j1','j2','j3','j4']
+  },
+  {
+    id: 'cq',
+    name: 'Chongqing',
+    emoji: '🌆',
+    dates: '11 – 15 novembre 2026',
+    daysLabel: '5 jours',
+    bg: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',
+    weather: { temp: '13–18°C', desc: 'Brumeux, bruine possible', tips: 'Couches superposées · Imperméable · Chaussures imperméables' },
+    hotel: { rec: 'Jiefangbei (解放碑)', why: 'Centre névralgique, Hongya Cave à 10 min à pied' },
+    days: ['j5','j6','j7','j8','j9']
+  },
+  {
+    id: 'xa',
+    name: 'Xi\'an',
+    emoji: '🏛️',
+    dates: '15 – 18 novembre 2026',
+    daysLabel: '4 jours',
+    bg: 'https://images.unsplash.com/photo-1547981609-4b6bfe67ca0b?w=800&q=80',
+    weather: { temp: '5–12°C', desc: 'Froid et gris — ville la plus froide', tips: 'Doudoune + écharpe + bonnet · Chaussures chaudes imperméables' },
+    hotel: { rec: 'Intra-muros / Bell Tower', why: 'Quartier Musulman à pied, ambiance historique' },
+    days: ['j10','j11','j12','j13']
+  },
+  {
+    id: 'bj',
+    name: 'Beijing',
+    emoji: '🏯',
+    dates: '18 – 22 novembre 2026',
+    daysLabel: '5 jours',
+    bg: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=800&q=80',
+    weather: { temp: '3–10°C', desc: 'Froid sec — ciel souvent bleu', tips: 'Grosse doudoune + bonnet + gants · Froid perçant mais qualité air excellente' },
+    hotel: { rec: 'Dongcheng ou Gulou', why: 'Gulou = hutongs authentiques + rapport qualité/prix · Dongcheng = à pied Cité Interdite' },
+    days: ['j14','j15','j16','j17','j18']
+  },
+  {
+    id: 'sh',
+    name: 'Shanghai',
+    emoji: '🌃',
+    dates: '22 – 26 novembre 2026',
+    daysLabel: '5 jours',
+    bg: 'https://images.unsplash.com/photo-1538428494232-9c0d8a3ab403?w=800&q=80',
+    weather: { temp: '10–16°C', desc: 'Frais et agréable — quelques jours gris', tips: 'Manteau chaud + écharpe · Plus doux que Beijing' },
+    hotel: { rec: 'Jing\'an ou French Concession', why: 'Concession = quartier le plus agréable, connecté au Bund' },
+    days: ['j19','j20','j21','j22','j23']
+  },
+  {
+    id: 'hk2',
+    name: 'Hong Kong (retour)',
+    emoji: '✈️',
+    dates: '26 – 27 novembre 2026',
+    daysLabel: '2 jours',
+    bg: 'https://images.unsplash.com/photo-1474557157379-8aa74a6ef541?w=800&q=80',
+    weather: { temp: '22–26°C', desc: 'Toujours agréable', tips: 'Dernière soirée — profitez !' },
+    hotel: { rec: 'TST ou hôtel aéroport', why: 'Selon heure des vols retour' },
+    days: ['j24','j25']
+  }
+];
+
+const DAYS = {
+  j1: {
+    id: 'j1', num: 1, cityId: 'hk1',
+    title: 'Arrivées à Hong Kong',
+    date: 'Dimanche 8 novembre 2026',
+    type: 'tampon',
+    preview: ['Couple 16h25', 'Amies 18h30', 'Soirée légère'],
+    tamponNote: 'Jour tampon arrivée. Couple atterrit à 16h25, amies à 18h30. Ne pas surcharger — récupération jet lag prioritaire.',
+    sections: [
+      {
+        time: '🌅 Arrivée',
+        activities: [
+          {
+            name: 'Airport Express MTR → Hôtel',
+            desc: 'Train ultra-rapide depuis l\'aéroport HKG. Descendre à Kowloon Station puis métro ou taxi.',
+            emoji: '🚄',
+            duration: '35–45 min',
+            price: 'HKD 105/pers ≈ 12€',
+            maps: 'Hong Kong International Airport',
+            tips: 'Acheter l\'Octopus Card dès l\'aéroport — utilisable pour tout le séjour HK. Accepte Alipay et carte bancaire.'
+          }
+        ]
+      },
+      {
+        time: '🌆 Soirée',
+        activities: [
+          {
+            name: 'Avenue of Stars — Promenade TST',
+            desc: 'Promenade iconique face au Victoria Harbour illuminé. Statues de stars HK, vue panoramique sur l\'île.',
+            emoji: '⭐',
+            duration: '30–45 min',
+            price: 'Gratuit',
+            maps: 'Avenue of Stars Hong Kong',
+            tips: 'Être en place avant 20h00 pour la Symphony of Lights'
+          },
+          {
+            name: 'Symphony of Lights',
+            desc: 'Spectacle son et lumière sur les buildings de HK Island — le plus grand spectacle permanent au monde. Chaque soir à 20h00, dure 15 min.',
+            emoji: '🌟',
+            duration: '15 min',
+            price: 'Gratuit',
+            maps: 'Tsim Sha Tsui Waterfront Promenade',
+          },
+          {
+            name: 'Dîner dans TST',
+            desc: 'Nombreux restaurants à 5 min à pied. Cantonais, dim sum tardif ou cuisine internationale selon état de fatigue.',
+            emoji: '🥢',
+            duration: '45–60 min',
+            price: 'HKD 80–200/pers',
+            maps: 'Tsim Sha Tsui restaurants Hong Kong'
+          }
+        ]
+      }
+    ],
+    checklist: ['Octopus Card achetée à l\'aéroport', 'SIM locale ou eSIM activée', 'Alipay International vérifié', 'VPN activé (avant arrivée Chine continentale)']
+  },
+
+  j2: {
+    id: 'j2', num: 2, cityId: 'hk1',
+    title: 'Hong Kong Island',
+    date: 'Lundi 9 novembre 2026',
+    type: 'visite',
+    preview: ['Man Mo Temple', 'Victoria Peak', 'Temple Street'],
+    sections: [
+      {
+        time: '🌅 Matin',
+        activities: [
+          {
+            name: 'Man Mo Temple',
+            desc: 'L\'un des temples les plus anciens et photographiés de HK. Encens qui tourbillonne sous les bobines géantes. Ambiance mystique dans le quartier de Sheung Wan.',
+            emoji: '🛕',
+            duration: '45 min',
+            price: 'Gratuit',
+            maps: 'Man Mo Temple Hong Kong',
+            tips: 'Depuis Central MTR (ligne Tsuen Wan depuis TST, HKD 9), puis 12 min à pied via Hollywood Road'
+          },
+          {
+            name: 'Hollywood Road + PMQ',
+            desc: 'Rue des antiquaires et galeries d\'art. PMQ = ancienne caserne de police reconvertie en hub créatif avec boutiques de designers locaux.',
+            emoji: '🎨',
+            duration: '1h',
+            price: 'Gratuit (shopping optionnel)',
+            maps: 'Hollywood Road Antiques Hong Kong'
+          }
+        ]
+      },
+      {
+        time: '☀️ Après-midi',
+        activities: [
+          {
+            name: 'Peak Tram → Victoria Peak',
+            desc: 'Funiculaire historique depuis 1888 montant à 552m. Sky Terrace 428 offre la vue la plus spectaculaire sur le skyline et le Harbour. Prendre le tram le matin pour éviter les queues.',
+            emoji: '🚠',
+            duration: '2h sur place',
+            price: 'HKD 88 A/R tram + HKD 80 Sky Terrace',
+            maps: 'Victoria Peak Hong Kong',
+            tips: '⚠️ RÉSERVER le Peak Tram en ligne — queue pouvant dépasser 1h sur place. La balade autour du sommet (30 min) offre d\'autres angles.'
+          },
+          {
+            name: 'Tram historique Central → Causeway Bay',
+            desc: 'Les double-deckers verts qui sillonnent HK Island depuis 1904. Trajet longeant le nord de l\'île, vue sur la vie locale. Incontournable pour l\'ambiance.',
+            emoji: '🚃',
+            duration: '25 min de trajet',
+            price: 'HKD 3',
+            maps: 'Hong Kong Tram Causeway Bay'
+          },
+          {
+            name: 'Victoria Park + Causeway Bay',
+            desc: 'Parc central animé, balade décontractée dans le quartier le plus commerçant de HK Island. Time Square shopping mall si besoin.',
+            emoji: '🌳',
+            duration: '45 min',
+            price: 'Gratuit',
+            maps: 'Victoria Park Hong Kong'
+          }
+        ]
+      },
+      {
+        time: '🌙 Soirée',
+        activities: [
+          {
+            name: 'Temple Street Night Market',
+            desc: 'Le marché de nuit le plus célèbre de Kowloon. Vêtements, souvenirs, street food, diseurs de bonne aventure. Ambiance électrique après 19h.',
+            emoji: '🏮',
+            duration: '1h30',
+            price: 'Entrée libre — budget shopping/repas selon envie',
+            maps: 'Temple Street Night Market Hong Kong',
+            tips: 'MTR TST → Jordan (3 min, HKD 7). Ouvrir à partir de 18h-19h, peak à 20h.'
+          }
+        ]
+      }
+    ],
+    checklist: ['Peak Tram : réserver en ligne avant', 'Vérifier météo (brouillard = vue Peak réduite)']
+  },
+
+  j3: {
+    id: 'j3', num: 3, cityId: 'hk1',
+    title: 'Lantau + Kowloon Nord',
+    date: 'Mardi 10 novembre 2026',
+    type: 'excursion',
+    preview: ['Bouddha géant Lantau', 'Wong Tai Sin', 'Nan Lian Garden'],
+    sections: [
+      {
+        time: '🌅 Matin — Île de Lantau',
+        activities: [
+          {
+            name: 'Ngong Ping 360 — Téléphérique',
+            desc: 'Téléphérique spectaculaire de 5,7 km survoltant les montagnes de Lantau. Crystal Cabin = vue à 360° y compris sous les pieds. Vue sur l\'aéroport et la mer de Chine.',
+            emoji: '🚡',
+            duration: '25 min trajet A/R',
+            price: 'HKD 235/pers Crystal Cabin A/R',
+            maps: 'Ngong Ping 360 Hong Kong',
+            tips: '⚠️ Réserver Crystal Cabin en ligne. Vérifier météo — fermé par vents >50 km/h.'
+          },
+          {
+            name: 'Tian Tan Buddha — Bouddha Géant',
+            desc: 'Le plus grand Bouddha en bronze assis au monde (34m). 268 marches depuis la base. Vue panoramique sur Lantau. Atmosphère sereine en dehors des heures de pointe.',
+            emoji: '🙏',
+            duration: '1h30',
+            price: 'Gratuit (accès extérieur)',
+            maps: 'Tian Tan Buddha Lantau Hong Kong'
+          },
+          {
+            name: 'Po Lin Monastery',
+            desc: 'Monastère bouddhiste actif juste en contrebas du Bouddha. Architecturalement coloré et grandiose. Possibilité de déjeuner végétarien au restaurant du monastère.',
+            emoji: '🏯',
+            duration: '45 min',
+            price: 'Repas végétarien ~HKD 100/pers',
+            maps: 'Po Lin Monastery Lantau Hong Kong',
+            tips: 'Repas servis vers midi. Vérifier horaires sur place.'
+          }
+        ]
+      },
+      {
+        time: '☀️ Après-midi — Kowloon Nord',
+        activities: [
+          {
+            name: 'Wong Tai Sin Temple',
+            desc: 'Temple taoïste extraordinairement coloré, très fréquenté par les locaux pour prier et consulter les oracles. Lignes de kau cim (bâtonnets oracles) — expérience authentique.',
+            emoji: '🎋',
+            duration: '1h',
+            price: 'Gratuit',
+            maps: 'Wong Tai Sin Temple Hong Kong',
+            tips: 'MTR Wong Tai Sin (ligne Kwun Tong), 15 min depuis Tung Chung via Jordan'
+          },
+          {
+            name: 'Chi Lin Nunnery + Nan Lian Garden',
+            desc: 'Ensemble bouddhiste Tang reconstitué à l\'identique (pas de clous). Nan Lian Garden juste à côté : jardin Tang paysager avec pagode dorée — un des plus beaux espaces verts de HK.',
+            emoji: '🌸',
+            duration: '1h15',
+            price: 'Gratuit',
+            maps: 'Chi Lin Nunnery Hong Kong',
+            tips: 'À 5 min à pied de Wong Tai Sin. Contraste saisissant avec les buildings autour.'
+          }
+        ]
+      },
+      {
+        time: '🌙 Soirée',
+        activities: [
+          {
+            name: 'Ladies\' Market + Mong Kok',
+            desc: 'Marché de rue sur Tung Choi Street — vêtements, accessoires, gadgets. Quartier de Mong Kok : le plus dense au monde au km². Sneaker Street juste à côté pour les passionnés.',
+            emoji: '👜',
+            duration: '1h30',
+            price: 'Entrée libre',
+            maps: 'Ladies Market Mong Kok Hong Kong'
+          }
+        ]
+      }
+    ],
+    checklist: ['Ngong Ping 360 Crystal Cabin : réserver en ligne', 'Vérifier météo Lantau (brouillard fréquent le matin)']
+  },
+
+  j4: {
+    id: 'j4', num: 4, cityId: 'hk1',
+    title: 'Départ vers Chongqing',
+    date: 'Mercredi 11 novembre 2026',
+    type: 'tampon',
+    preview: ['Check-out HK', 'Vol → Chongqing', 'Arrivée ~soir'],
+    tamponNote: 'Jour tampon départ. Programme allégé selon heure du vol. Vol HK → Chongqing : ~2h30 de vol.',
+    sections: [
+      {
+        time: '🌅 Matin (si départ >13h)',
+        activities: [
+          {
+            name: 'Balade TST Waterfront',
+            desc: 'Dernière promenade face au Harbour. Vue sur HK Island le matin, lumière différente de la soirée.',
+            emoji: '🌊',
+            duration: '45 min',
+            price: 'Gratuit',
+            maps: 'Tsim Sha Tsui Promenade Hong Kong'
+          },
+          {
+            name: 'Shopping last-minute + petit-déjeuner',
+            desc: 'Harbour City (TST) ou DFS pour derniers achats. Dim sum de départ dans le quartier.',
+            emoji: '🛍️',
+            duration: '1h',
+            price: 'Selon envie',
+            maps: 'Harbour City Tsim Sha Tsui Hong Kong'
+          }
+        ]
+      },
+      {
+        time: '✈️ Transport',
+        activities: [
+          {
+            name: 'Aéroport HKG → Vol → Chongqing CKG',
+            desc: 'Airport Express depuis Kowloon Station (check-in en ville possible). Vol ~2h30. Arrivée Chongqing Jiangbei Airport.',
+            emoji: '✈️',
+            duration: '~4h porte-à-porte',
+            price: '~CNY 400–900/pers (≈ 50–110€)',
+            maps: 'Hong Kong International Airport',
+            tips: 'Vérifier heure exacte sur votre billet. Airport Express depuis TST Kowloon Station : 1 min à pied de certains hôtels TST.'
+          }
+        ]
+      }
+    ],
+    checklist: ['Vol HK → Chongqing : confirmer heure départ', 'Yuan CNY : retirer à l\'aéroport HK ou avoir Alipay chargé', 'VPN activé pour la Chine continentale']
+  },
+
+  j5: {
+    id: 'j5', num: 5, cityId: 'cq',
+    title: 'Arrivée Chongqing + Hongya Cave',
+    date: 'Mercredi 11 novembre 2026',
+    type: 'tampon',
+    preview: ['Arrivée CKG', 'Check-in Jiefangbei', 'Hongya Cave nocturne'],
+    tamponNote: 'Jour tampon arrivée Chongqing. Ville verticale et labyrinthique — prendre le temps de s\'orienter.',
+    sections: [
+      {
+        time: '🌆 Arrivée',
+        activities: [
+          {
+            name: 'Aéroport CKG → Hôtel Jiefangbei',
+            desc: 'Métro Ligne 10 depuis l\'aéroport vers le centre. Ou taxi depuis la borne officielle.',
+            emoji: '🚇',
+            duration: '45 min (métro)',
+            price: 'CNY 7 métro / CNY 80–120 taxi groupe',
+            maps: 'Chongqing Jiangbei Airport',
+            tips: 'Métro payable Alipay QR code. Taxi : préférer les taxis officiels, afficher l\'adresse en chinois.'
+          }
+        ]
+      },
+      {
+        time: '🌙 Soirée',
+        activities: [
+          {
+            name: 'Hongya Cave (洪崖洞) — illuminée',
+            desc: 'L\'emblème de Chongqing. Complexe commercial de 11 étages construit à flanc de falaise sur la rivière Jialing. Spectaculaire de nuit avec les lumières se reflétant sur l\'eau. Rendu célèbre par le film de Miyazaki "Le Voyage de Chihiro".',
+            emoji: '🏮',
+            duration: '1h–1h30',
+            price: 'Gratuit (accès extérieur + bords) — intérieur shopping optionnel',
+            maps: 'Hongya Cave Chongqing',
+            tips: 'À 10 min à pied depuis Jiefangbei. La meilleure vue est depuis le pont Qiansimen en face.'
+          },
+          {
+            name: 'Hot-pot Chongqing — Dîner',
+            desc: 'Expérience culinaire incontournable de Chongqing. Hot-pot épicé (numbing spicy) avec des plats de viande, abats, légumes à tremper dans un bouillon huile rouge. Prévoir estomac solide.',
+            emoji: '🌶️',
+            duration: '1h30',
+            price: 'CNY 80–150/pers (≈ 10–18€)',
+            maps: 'Hotpot restaurant Jiefangbei Chongqing',
+            tips: '🌶️🌶️ Demander "zhong la" (épice moyenne) pour les non-habitués. Boire du lait ou manger du riz pour calmer.'
+          }
+        ]
+      }
+    ],
+    checklist: ['Alipay : vérifier solde rechargé en CNY', 'Avoir adresse hôtel en caractères chinois']
+  },
+
+  j6: {
+    id: 'j6', num: 6, cityId: 'cq',
+    title: 'Skyline + Musées Chongqing',
+    date: 'Jeudi 12 novembre 2026',
+    type: 'visite',
+    preview: ['Raffles Skywalk', 'Three Gorges Museum', 'Eling Park', 'Nan\'an nocturne'],
+    sections: [
+      {
+        time: '🌅 Matin',
+        activities: [
+          {
+            name: 'Raffles City Chongqing — Skywalk',
+            desc: 'Passerelle suspendue à 250m de hauteur reliant deux tours jumelles du complexe Raffles City. Conçu par Moshe Safdie. L\'une des vues urbaines les plus spectaculaires de Chine.',
+            emoji: '🌉',
+            duration: '1h',
+            price: 'CNY 120/pers',
+            maps: 'Raffles City Chongqing Skywalk',
+            tips: 'Ouvre à 10h. Arriver tôt pour éviter les files week-end. À pied depuis Jiefangbei (5 min).'
+          },
+          {
+            name: 'Jiefangbei Pedestrian Street + Monument',
+            desc: 'Cœur névralgique de Chongqing. Le monument de la Libération au centre, entouré de tours modernes et de shopping. Ambiance très animée.',
+            emoji: '🏙️',
+            duration: '45 min',
+            price: 'Gratuit',
+            maps: 'Jiefangbei Pedestrian Street Chongqing'
+          }
+        ]
+      },
+      {
+        time: '☀️ Après-midi',
+        activities: [
+          {
+            name: 'Three Gorges Museum (三峡博物馆)',
+            desc: 'L\'un des meilleurs musées de Chine sur l\'histoire du fleuve Yangtzé et des Trois Gorges. Objets trouvés lors de la construction du barrage des Trois Gorges, reconstitutions de villages noyés.',
+            emoji: '🏛️',
+            duration: '2h',
+            price: 'Gratuit',
+            maps: 'Three Gorges Museum Chongqing',
+            tips: 'Métro L1 depuis Jiefangbei, 10 min. Textes partiellement en anglais.'
+          },
+          {
+            name: 'Eling Park (鹅岭公园)',
+            desc: 'Parc en hauteur offrant un panorama exceptionnel sur la confluence des rivières Yangtzé et Jialing — spectacle unique de deux fleuves se rejoignant. Jardin paysager, bonsaïs, calme.',
+            emoji: '🌿',
+            duration: '1h30',
+            price: 'Gratuit',
+            maps: 'Eling Park Chongqing',
+            tips: 'Taxi depuis le musée ~CNY 20. Vue meilleure l\'après-midi quand le brouillard se lève.'
+          }
+        ]
+      },
+      {
+        time: '🌙 Soirée',
+        activities: [
+          {
+            name: 'Nan\'an — Yique Road (Promenade rive sud)',
+            desc: 'La rive sud offre la plus belle vue nocturne sur le skyline de Chongqing illuminé. Vue unique sur les gratte-ciels étagés à flanc de colline. Photo incontournable.',
+            emoji: '🌌',
+            duration: '1h30',
+            price: 'Gratuit',
+            maps: 'Nanbin Road Night View Chongqing',
+            tips: 'Métro + marche depuis le centre. Meilleur entre 19h30 et 21h.'
+          }
+        ]
+      }
+    ]
+  },
+
+  j7: {
+    id: 'j7', num: 7, cityId: 'cq',
+    title: 'Ciqikou — Vieux Bourg',
+    date: 'Vendredi 13 novembre 2026',
+    type: 'visite',
+    preview: ['Ciqikou Ancient Town', 'Arhat Temple', 'Quartier Jiefangbei'],
+    sections: [
+      {
+        time: '🌅 Matin–Midi',
+        activities: [
+          {
+            name: 'Ciqikou Ancient Town (磁器口)',
+            desc: 'Quartier historique Ming/Qing sur les rives de la Jialing. Ruelles pavées, maisons en bois à colombages, ateliers d\'artisanat, temples, et marché street food exceptionnel. Un des rares quartiers authentiques de Chongqing préservé.',
+            emoji: '🏘️',
+            duration: '3h',
+            price: 'Gratuit (accès) — street food ~CNY 30–60',
+            maps: 'Ciqikou Ancient Town Chongqing',
+            tips: 'Métro L1 → Ciqikou (30 min, CNY 4). À voir le matin avant l\'affluence. Spécialité : Mao Xuewang (abats épicés) et Ci Ba (gâteau de riz grillé).'
+          }
+        ]
+      },
+      {
+        time: '☀️ Après-midi',
+        activities: [
+          {
+            name: 'Arhat Temple (罗汉寺)',
+            desc: 'Temple bouddhiste en plein centre de Chongqing, remarquable pour sa galerie de 500 statues d\'Arhat (disciples de Bouddha), toutes différentes et expressives. Ambiance contemplative.',
+            emoji: '🧘',
+            duration: '1h',
+            price: 'CNY 10',
+            maps: 'Luohan Temple Chongqing',
+            tips: 'À 5 min à pied de Jiefangbei. Beaucoup de fidèles en semaine — ambiance authentique.'
+          },
+          {
+            name: 'Chongqing Art Museum',
+            desc: 'Musée d\'art contemporain de Chongqing dans un bâtiment architectural remarquable. Collections d\'artistes locaux et expositions temporaires.',
+            emoji: '🎭',
+            duration: '1h',
+            price: 'Gratuit',
+            maps: 'Chongqing Art Museum'
+          }
+        ]
+      },
+      {
+        time: '🌙 Soirée',
+        activities: [
+          {
+            name: 'Hot-pot — Deuxième expérience',
+            desc: 'Tenter un restaurant différent ou un style différent (hot-pot Chuan-style, ou broth plus clair). Les restaurants locaux autour de Jiefangbei sont nombreux et moins touristiques que les grandes enseignes.',
+            emoji: '🍲',
+            duration: '1h30',
+            price: 'CNY 80–150/pers',
+            maps: 'Hotpot Jiefangbei Chongqing'
+          }
+        ]
+      }
+    ]
+  },
+
+  j8: {
+    id: 'j8', num: 8, cityId: 'cq',
+    title: 'Excursion Dazu — Grottes Bouddhistes',
+    date: 'Samedi 14 novembre 2026',
+    type: 'excursion',
+    preview: ['Dazu Baodingshan', 'Dazu Beishan', 'Patrimoine UNESCO'],
+    sections: [
+      {
+        time: '🌅 Départ matinal',
+        activities: [
+          {
+            name: 'Train vers Dazu',
+            desc: 'Train HSR depuis Gare de Chongqing Nord. Trajet rapide à travers les collines du Sichuan.',
+            emoji: '🚄',
+            duration: '1h–1h20',
+            price: 'CNY 30–50/pers',
+            maps: 'Chongqing North Railway Station',
+            tips: '⚠️ Réserver les billets à l\'avance sur Trip.com ou 12306.cn. Départ recommandé 08h00.'
+          }
+        ]
+      },
+      {
+        time: '☀️ Journée Dazu',
+        activities: [
+          {
+            name: 'Dazu — Beishan Rock Carvings (北山)',
+            desc: 'Premier site, moins touristique. Sculptures sur falaise du IXe–XIIe siècle représentant Bouddha, Guanyin et figures taoïstes. Détails remarquables de finesse.',
+            emoji: '⛰️',
+            duration: '1h30',
+            price: 'CNY 115 (billet combiné)',
+            maps: 'Dazu Beishan Rock Carvings',
+            tips: 'Taxi depuis la gare de Dazu ~CNY 15'
+          },
+          {
+            name: 'Dazu — Baodingshan Rock Carvings (宝顶山) ⭐',
+            desc: 'Le chef-d\'œuvre. Sculptures bouddhistes monumentales du XIIe–XIIIe siècle taillées dans une falaise en fer à cheval de 300m. La "Couchée de Parinirvana" de 31m est saisissante. Patrimoine UNESCO.',
+            emoji: '🗿',
+            duration: '2h',
+            price: 'Inclus billet combiné',
+            maps: 'Dazu Baodingshan Rock Carvings',
+            tips: 'Navette depuis Beishan ~CNY 10. Le plus spectaculaire des deux sites — à ne pas manquer.'
+          },
+          {
+            name: 'Déjeuner à Dazu',
+            desc: 'Petits restaurants autour du site ou dans le bourg de Dazu. Cuisine du Sichuan locale.',
+            emoji: '🍜',
+            duration: '45 min',
+            price: 'CNY 40–80/pers',
+            maps: 'Dazu town restaurants'
+          }
+        ]
+      },
+      {
+        time: '🌆 Retour',
+        activities: [
+          {
+            name: 'Train Dazu → Chongqing + Soirée',
+            desc: 'Retour en HSR. Soirée détente à Hongya Cave ou balade Jiefangbei.',
+            emoji: '🚄',
+            duration: '1h20 retour',
+            price: 'CNY 30–50/pers',
+            maps: 'Dazu Railway Station'
+          }
+        ]
+      }
+    ],
+    checklist: ['Billets train Chongqing ↔ Dazu : réserver maintenant', 'Billet combiné Dazu : achetable sur Trip.com', 'Chaussures confortables (terrain irrégulier entre les sites)']
+  },
+
+  j9: {
+    id: 'j9', num: 9, cityId: 'cq',
+    title: 'Départ vers Xi\'an',
+    date: 'Dimanche 15 novembre 2026',
+    type: 'tampon',
+    preview: ['Check-out Chongqing', 'HSR → Xi\'an ~6h30', 'Soirée Quartier Musulman'],
+    tamponNote: 'Jour tampon transport. Train Chongqing → Xi\'an : ~6h30 en HSR. Départ recommandé 08h–09h pour arriver en début d\'après-midi.',
+    sections: [
+      {
+        time: '🌅 Matin',
+        activities: [
+          {
+            name: 'Check-out + Gare Chongqing Nord',
+            desc: 'Check-out de l\'hôtel. Taxi ou métro vers la gare. Prévoir 30 min d\'avance minimum.',
+            emoji: '🧳',
+            duration: '1h (transport gare)',
+            price: 'CNY 4–6 métro / ~CNY 50 taxi',
+            maps: 'Chongqing North Railway Station'
+          },
+          {
+            name: 'HSR Chongqing → Xi\'an Beilin',
+            desc: 'Train grande vitesse traversant les montagnes du Qinling. Paysages spectaculaires depuis les fenêtres. Wagnes confortables, restauration à bord.',
+            emoji: '🚄',
+            duration: '~6h30',
+            price: 'CNY 200–280/pers (≈ 25–35€)',
+            maps: 'Xian North Railway Station',
+            tips: '⚠️ Réserver MAINTENANT sur Trip.com. Siège 2e classe confortable et largement suffisant. Emporter pique-nique ou acheter en gare.'
+          }
+        ]
+      },
+      {
+        time: '🌆 Arrivée Xi\'an',
+        activities: [
+          {
+            name: 'Gare Xi\'an Nord → Hôtel',
+            desc: 'Métro Ligne 4 depuis Xi\'an Nord vers le centre. Ou taxi depuis la borne officielle.',
+            emoji: '🚇',
+            duration: '30–40 min',
+            price: 'CNY 4–6 métro / CNY 50–70 taxi',
+            maps: 'Xi\'an North Railway Station'
+          },
+          {
+            name: 'Muslim Quarter (回民街) — Soirée d\'arrivée',
+            desc: 'Immersion immédiate dans l\'atmosphère unique de Xi\'an. Rues pavées bordées de lanternes rouges, odeurs d\'agneau grillé et d\'épices. Le meilleur des street food Xi\'an dans un seul quartier.',
+            emoji: '🕌',
+            duration: '1h30',
+            price: 'Gratuit (street food CNY 30–60)',
+            maps: 'Muslim Quarter Xi\'an Huimin Street',
+            tips: 'À pied depuis Bell Tower (5 min). Spécialités : Rou Jia Mo, Yang Rou Pao Mo, Liangpi.'
+          }
+        ]
+      }
+    ],
+    checklist: ['HSR Chongqing → Xi\'an : billet en main', 'Adresse hôtel Xi\'an en chinois', 'Tickets Armée Terre Cuite : réserver MAINTENANT si pas encore fait']
+  },
+
+  j10: {
+    id: 'j10', num: 10, cityId: 'xa',
+    title: 'Arrivée Xi\'an + Quartier Musulman',
+    date: 'Dimanche 15 novembre 2026',
+    type: 'tampon',
+    preview: ['Arrivée Xi\'an', 'Bell Tower', 'Muslim Quarter'],
+    tamponNote: 'Jour tampon arrivée (combiné avec J9 transport). Soirée légère dans le quartier.',
+    sections: [
+      {
+        time: '🌙 Soirée',
+        activities: [
+          {
+            name: 'Bell Tower (钟楼) — Vue extérieure',
+            desc: 'Symbole de Xi\'an au centre de la ville. Tour de la cloche Ming datant de 1384, au croisement des 4 grands axes. Vue sur les remparts illuminés.',
+            emoji: '🔔',
+            duration: '30 min (extérieur)',
+            price: 'CNY 35 si entrée (optionnel ce soir)',
+            maps: 'Bell Tower Xi\'an'
+          },
+          {
+            name: 'Muslim Quarter (Huimin Jie) — Street food',
+            desc: 'Le quartier le plus animé de Xi\'an la nuit. Population Hui (musulmans Han), cuisines parfumées, échoppes de souvenirs, tissus brodés. Atmosphère unique mélange Orient et Chine.',
+            emoji: '🏮',
+            duration: '1h30',
+            price: 'Entrée libre',
+            maps: 'Xi\'an Muslim Quarter',
+            tips: 'Must-eat : Rou Jia Mo (le "burger" xi\'anais), Pao Mo (soupe pain agneau), brochettes d\'agneau (yangrou chuan).'
+          }
+        ]
+      }
+    ]
+  },
+
+  j11: {
+    id: 'j11', num: 11, cityId: 'xa',
+    title: 'Armée de Terre Cuite',
+    date: 'Lundi 16 novembre 2026',
+    type: 'excursion',
+    preview: ['Fosse N°1', 'Fosse N°2 & N°3', 'Musée Bronze', 'Tumulus Qin'],
+    sections: [
+      {
+        time: '🌅 Matin — Départ tôt',
+        activities: [
+          {
+            name: 'Transport Xi\'an → Site Terre Cuite',
+            desc: 'Bus 306/914 depuis la gare de Xi\'an (terminal Est). Ou taxi privé pour le groupe.',
+            emoji: '🚌',
+            duration: '45 min–1h',
+            price: 'Bus CNY 7/pers · Taxi groupe ~CNY 150 A/R',
+            maps: 'Museum of Qin Terra Cotta Warriors Xi\'an',
+            tips: 'Partir avant 09h00 pour être sur le site avant les groupes de touristes organisés.'
+          }
+        ]
+      },
+      {
+        time: '☀️ Sur le site',
+        activities: [
+          {
+            name: 'Fosse N°1 ⭐ — La plus grande',
+            desc: 'Hangar gigantesque (230m × 60m) abritant plus de 6 000 guerriers en rangées. La découverte visuelle est un choc. Chaque guerrier a des traits individuels uniques.',
+            emoji: '⚔️',
+            duration: '1h30',
+            price: 'CNY 120 (billet entrée site)',
+            maps: 'Pit 1 Terracotta Warriors Xi\'an'
+          },
+          {
+            name: 'Fosses N°2 et N°3',
+            desc: 'Fosse 2 : cavalerie et archers encore en cours de fouille — saisissant de voir l\'archéologie en direct. Fosse 3 : le "quartier général" avec état-major. Plus petite mais fascinante.',
+            emoji: '🏺',
+            duration: '1h',
+            price: 'Inclus',
+            maps: 'Pit 2 Terracotta Warriors'
+          },
+          {
+            name: 'Musée des Chars de Bronze',
+            desc: 'Deux chars et chevaux en bronze à échelle 1/2 d\'une précision d\'orfèvre. Parmi les plus beaux objets du patrimoine mondial. Souvent négligé par les visiteurs pressés — à ne pas manquer.',
+            emoji: '🐴',
+            duration: '45 min',
+            price: 'Inclus',
+            maps: 'Bronze Chariot Museum Terracotta Warriors'
+          },
+          {
+            name: 'Tumulus de Qin Shi Huang',
+            desc: 'La tombe non-fouillée du premier Empereur de Chine (210 av. J.-C.). Colline artificielle de 76m — seule une petite partie a été excavée. Contexte historique extraordinaire.',
+            emoji: '🌄',
+            duration: '1h',
+            price: 'Inclus (navette CNY 5)',
+            maps: 'Qin Shi Huang Mausoleum Xi\'an'
+          }
+        ]
+      },
+      {
+        time: '🌆 Retour + Soirée',
+        activities: [
+          {
+            name: 'Retour Xi\'an + Remparts illuminés',
+            desc: 'Retour par bus/taxi. Soirée : balade sur les remparts de Xi\'an côté Nanmen (porte sud) — magnifique de nuit.',
+            emoji: '🏰',
+            duration: '1h promenade',
+            price: 'CNY 54 entrée remparts',
+            maps: 'South Gate Xi\'an City Wall'
+          }
+        ]
+      }
+    ],
+    checklist: ['⚠️ Tickets Terre Cuite : OBLIGATOIRE réserver en ligne (quota journalier)', 'Prévoir chaussures confortables — beaucoup de marche', 'Emporter snacks — restauration correcte mais chère sur site']
+  },
+
+  j12: {
+    id: 'j12', num: 12, cityId: 'xa',
+    title: 'Remparts + Pagode + Musée',
+    date: 'Mardi 17 novembre 2026',
+    type: 'visite',
+    preview: ['Remparts à vélo', 'Shaanxi Museum', 'Grande Pagode de l\'Oie'],
+    sections: [
+      {
+        time: '🌅 Matin — Intra-muros',
+        activities: [
+          {
+            name: 'Remparts de Xi\'an à vélo 🚴',
+            desc: 'Les remparts Ming les mieux conservés de Chine (13,7 km de tour complet, 12m de haut). Faire le tour complet en vélo offre une perspective unique sur la ville dans les remparts et les faubourgs extérieurs.',
+            emoji: '🏰',
+            duration: '2h',
+            price: 'CNY 54 entrée + CNY 45/h vélo',
+            maps: 'Xi\'an City Wall',
+            tips: 'Location de vélos directement sur les remparts. Plusieurs points de départ. Froid le matin — prévoir gants.'
+          },
+          {
+            name: 'Bell Tower + Drum Tower',
+            desc: 'Les deux tours symboles de Xi\'an se font face. Bell Tower : vue sur les 4 axes. Drum Tower : expositions sur les coutumes de la ville et tambours traditionnels.',
+            emoji: '🔔',
+            duration: '45 min',
+            price: 'CNY 35 Bell Tower / CNY 35 Drum Tower',
+            maps: 'Bell Tower and Drum Tower Xi\'an'
+          }
+        ]
+      },
+      {
+        time: '☀️ Après-midi — Quartier Sud',
+        activities: [
+          {
+            name: 'Shaanxi History Museum (陕西历史博物馆) ⭐',
+            desc: 'L\'un des meilleurs musées de Chine. Collections couvrant 1 million d\'années d\'histoire de la région — de la Préhistoire à la période Tang. Trésors Tang en bronze, or et céramique absolument remarquables.',
+            emoji: '🏛️',
+            duration: '2h',
+            price: 'Gratuit (réservation obligatoire)',
+            maps: 'Shaanxi History Museum Xi\'an',
+            tips: '⚠️ Réservation en ligne OBLIGATOIRE — gratuit mais quota journalier strict. À faire avant le voyage. Textes en anglais.'
+          },
+          {
+            name: 'Grande Pagode de l\'Oie Sauvage (大雁塔)',
+            desc: 'Pagode bouddhiste Tang de 64m datant de 652. Construite par le moine Xuanzang pour stocker les sutras rapportés d\'Inde (inspirée du roman "La Pérégrination vers l\'Ouest"). Parc paysager autour.',
+            emoji: '🗼',
+            duration: '1h',
+            price: 'CNY 50',
+            maps: 'Big Wild Goose Pagoda Xi\'an'
+          },
+          {
+            name: 'Spectacle de Fontaines Musicales',
+            desc: 'Chaque soir à 18h00, fontaines chorégraphiées devant la Grande Pagode. Plus grand écran d\'eau d\'Asie. Gratuit et spectaculaire — le bonus parfait de fin d\'après-midi.',
+            emoji: '⛲',
+            duration: '30 min',
+            price: 'Gratuit',
+            maps: 'Big Wild Goose Pagoda Fountain Show Xi\'an',
+            tips: 'Spectacle à 18h00 exactement. Arriver 10 min avant pour une bonne place.'
+          }
+        ]
+      },
+      {
+        time: '🌙 Soirée',
+        activities: [
+          {
+            name: 'Dernier dîner Xi\'an — Muslim Quarter',
+            desc: 'Dernière soirée dans le quartier musulman. Tester ce qui n\'a pas encore été goûté : biang biang noodles, persimmon flatbread (shi zi bing), jujubes confits.',
+            emoji: '🥙',
+            duration: '1h30',
+            price: 'CNY 50–100/pers',
+            maps: 'Muslim Quarter Xi\'an'
+          }
+        ]
+      }
+    ],
+    checklist: ['Shaanxi History Museum : réservation gratuite en ligne', 'Prévoir gants pour vélo sur les remparts (froid matinal)']
+  },
+
+  j13: {
+    id: 'j13', num: 13, cityId: 'xa',
+    title: 'Départ vers Beijing',
+    date: 'Mercredi 18 novembre 2026',
+    type: 'tampon',
+    preview: ['Check-out Xi\'an', 'HSR → Beijing ~4h30', 'Soirée Wangfujing'],
+    tamponNote: 'Jour tampon transport. Train Xi\'an → Beijing : ~4h30 en HSR. Départ recommandé 08h–09h.',
+    sections: [
+      {
+        time: '🚄 Transport',
+        activities: [
+          {
+            name: 'HSR Xi\'an Nord → Beijing Ouest',
+            desc: 'Ligne directe HSR traversant la plaine du Nord de la Chine. Train ultrarapide et confortable.',
+            emoji: '🚄',
+            duration: '~4h30',
+            price: 'CNY 450–650/pers (≈ 55–80€)',
+            maps: 'Xi\'an North Railway Station',
+            tips: '⚠️ Réserver maintenant — très demandé. Siège 2e classe suffisant.'
+          }
+        ]
+      },
+      {
+        time: '🌆 Arrivée Beijing',
+        activities: [
+          {
+            name: 'Gare Beijing Ouest → Hôtel Dongcheng',
+            desc: 'Métro depuis Beijing Ouest vers Dongcheng ou Gulou selon votre hôtel.',
+            emoji: '🚇',
+            duration: '30–45 min',
+            price: 'CNY 4–6',
+            maps: 'Beijing West Railway Station'
+          },
+          {
+            name: 'Wangfujing Street — Soirée d\'arrivée',
+            desc: 'Rue piétonne commerçante centrale de Beijing. Ambiance animée, mélange de boutiques modernes et de marchés de snacks traditionnels. Snack Street adjacente avec scorpions vivants et autres curiosités.',
+            emoji: '🏮',
+            duration: '1h',
+            price: 'Gratuit',
+            maps: 'Wangfujing Street Beijing'
+          },
+          {
+            name: 'Canard Laqué — Premier dîner Beijing ⭐',
+            desc: 'L\'expérience gastronomique incontournable de Beijing. Canard laqué entier découpé devant vous, à manger dans des crêpes avec sauce hoisin et ciboule. Quanjude ou Da Dong sont les références.',
+            emoji: '🦆',
+            duration: '1h30',
+            price: 'CNY 150–300/pers selon restaurant',
+            maps: 'Quanjude Peking Duck Beijing',
+            tips: 'Réservation conseillée pour Quanjude ou Da Dong. Da Dong = plus cher mais qualité supérieure.'
+          }
+        ]
+      }
+    ],
+    checklist: ['HSR Xi\'an → Beijing : billet en main', 'Cité Interdite : réservation en ligne si pas encore faite ⚠️']
+  },
+
+  j14: {
+    id: 'j14', num: 14, cityId: 'bj',
+    title: 'Arrivée Beijing + Wangfujing',
+    date: 'Mercredi 18 novembre 2026',
+    type: 'tampon',
+    preview: ['Arrivée Beijing', 'Wangfujing', 'Canard Laqué'],
+    tamponNote: 'Combiné avec J13 transport. Voir détails dans J13.',
+    sections: []
+  },
+
+  j15: {
+    id: 'j15', num: 15, cityId: 'bj',
+    title: 'Cœur Historique de Beijing',
+    date: 'Jeudi 19 novembre 2026',
+    type: 'visite',
+    preview: ['Place Tiananmen', 'Cité Interdite', 'Jingshan', 'Beihai + Houhai'],
+    sections: [
+      {
+        time: '🌅 Matin tôt (8h30 recommandé)',
+        activities: [
+          {
+            name: 'Place Tiananmen (天安门广场)',
+            desc: 'La plus grande place du monde (440 000 m²). Porte de la Paix Céleste avec le portrait de Mao, Monument aux Héros du Peuple, Mausolée de Mao. Atmosphère chargée d\'histoire.',
+            emoji: '🏛️',
+            duration: '45 min',
+            price: 'Gratuit (place) — CNY 15 entrée Porte Tiananmen',
+            maps: 'Tiananmen Square Beijing',
+            tips: 'Arriver à 08h30 avant les groupes. Contrôle de sécurité à l\'entrée — papiers d\'identité obligatoires.'
+          },
+          {
+            name: 'Cité Interdite (故宫) ⭐⭐',
+            desc: 'Ancien palais impérial Ming et Qing, plus grand complexe palatial du monde (980 bâtiments). Axe central de la Porte du Midi jusqu\'à la Porte de la Divine Bravoure. Hall de l\'Harmonie Suprême, Jardin Impérial. 2h minimum, 3h idéal.',
+            emoji: '🏯',
+            duration: '3h–3h30',
+            price: 'CNY 60 (basse saison)',
+            maps: 'Forbidden City Beijing',
+            tips: '⚠️ RÉSERVATION OBLIGATOIRE sur le site officiel www.dpm.org.cn — quota de 80 000 visiteurs/jour mais rupture possible. Réserver maintenant ! Entrée Méridienne au sud, sortie Shenwumen au nord.'
+          }
+        ]
+      },
+      {
+        time: '☀️ Après-midi',
+        activities: [
+          {
+            name: 'Jingshan Park (景山公园)',
+            desc: 'Colline artificielle créée avec les terres excavées de la Cité Interdite. La vue depuis le Pavillon Wanchun est LA vue à avoir sur Beijing — toits dorés de la Cité Interdite s\'étendant au loin.',
+            emoji: '⛰️',
+            duration: '1h',
+            price: 'CNY 2',
+            maps: 'Jingshan Park Beijing',
+            tips: 'À 5 min à pied de la sortie nord de la Cité Interdite. Ne pas manquer cette vue.'
+          },
+          {
+            name: 'Beihai Park (北海公园)',
+            desc: 'Jardin impérial avec lac et Pagode Blanche sur l\'île Qionghua. Empereurs s\'y promenaient depuis plus de 1000 ans. En novembre : feuilles d\'automne et calme.',
+            emoji: '🌊',
+            duration: '1h30',
+            price: 'CNY 10',
+            maps: 'Beihai Park Beijing'
+          },
+          {
+            name: 'Houhai Lake — Balade en fin d\'après-midi',
+            desc: 'Lac entouré de ruelles hutongs, cafés et bars. Ambiance détendue très différente du reste de Beijing. À l\'heure dorée de fin d\'après-midi c\'est particulièrement beau.',
+            emoji: '🚣',
+            duration: '1h',
+            price: 'Gratuit',
+            maps: 'Houhai Lake Beijing'
+          }
+        ]
+      }
+    ],
+    checklist: ['⚠️ Cité Interdite : réservation obligatoire sur dpm.org.cn', 'Papiers d\'identité pour Tiananmen', 'Partir à 08h30 pour eviter les groupes organisés']
+  },
+
+  j16: {
+    id: 'j16', num: 16, cityId: 'bj',
+    title: 'Grande Muraille — Mutianyu',
+    date: 'Vendredi 20 novembre 2026',
+    type: 'excursion',
+    preview: ['Grande Muraille Mutianyu', 'Téléphérique', 'Luge descente'],
+    sections: [
+      {
+        time: '🌅 Départ 7h30',
+        activities: [
+          {
+            name: 'Transport Beijing → Mutianyu',
+            desc: 'Taxi privé pour le groupe recommandé (plus simple). Alternative : Bus 916 depuis Dongzhimen + navette locale.',
+            emoji: '🚗',
+            duration: '1h30',
+            price: 'Taxi privé ~CNY 450–550 A/R groupe / Bus CNY 25/pers',
+            maps: 'Mutianyu Great Wall',
+            tips: 'Réserver taxi privé via Trip.com ou votre hôtel. Partir à 07h30 pour arriver à l\'ouverture (08h30).'
+          }
+        ]
+      },
+      {
+        time: '☀️ Sur la Muraille',
+        activities: [
+          {
+            name: 'Téléphérique — Montée',
+            desc: 'Téléphérique depuis la base jusqu\'à la section restaurée de la Muraille. Vue déjà spectaculaire pendant la montée sur les collines boisées.',
+            emoji: '🚡',
+            duration: '15 min',
+            price: 'CNY 100 A/R',
+            maps: 'Mutianyu Cable Car'
+          },
+          {
+            name: 'Grande Muraille de Chine — Mutianyu ⭐⭐',
+            desc: 'Section moins fréquentée que Badaling, mieux restaurée, plus authentique. Tours N°6 à N°23 accessibles. Vue sur les montagnes boisées à perte de vue. En novembre : dernières couleurs d\'automne. Marcher jusqu\'aux tours non-restaurées pour l\'ambiance sauvage.',
+            emoji: '🏔️',
+            duration: '3h',
+            price: 'CNY 65 entrée site',
+            maps: 'Mutianyu Great Wall Towers',
+            tips: 'Prévoir grosse doudoune et gants — vent fort et froid sur les hauteurs. Apporter eau et snacks.'
+          },
+          {
+            name: 'Luge (toboggan) — Descente',
+            desc: 'Toboggan en acier inoxydable serpentant dans la colline depuis la Muraille jusqu\'à la base. Fun, rapide (~5 min) et mémorable. Option populaire notamment pour le groupe.',
+            emoji: '🛷',
+            duration: '15 min (queue comprise)',
+            price: 'CNY 100',
+            maps: 'Mutianyu Great Wall Toboggan'
+          }
+        ]
+      },
+      {
+        time: '🌆 Retour + Soirée',
+        activities: [
+          {
+            name: 'Retour Beijing + Nanluoguxiang',
+            desc: 'Retour en taxi. Soirée dans le hutong animé de Nanluoguxiang — boutiques créatives, bars, restaurants, ambiance jeune et bohème.',
+            emoji: '🏘️',
+            duration: '1h30 soirée',
+            price: 'Gratuit (consommations selon envie)',
+            maps: 'Nanluoguxiang Beijing'
+          }
+        ]
+      }
+    ],
+    checklist: ['Taxi Mutianyu : réserver la veille via hôtel ou Trip.com', 'Grosse doudoune + gants obligatoires (vent très froid sur la Muraille)', 'Luge : réserver sur place, peu de queue en novembre']
+  },
+
+  j17: {
+    id: 'j17', num: 17, cityId: 'bj',
+    title: 'Hutongs + Temple du Ciel',
+    date: 'Samedi 21 novembre 2026',
+    type: 'visite',
+    preview: ['Tour du Tambour', 'Vélo hutongs', 'Temple du Ciel', 'Spectacle acrobatique'],
+    sections: [
+      {
+        time: '🌅 Matin — Nord de Beijing',
+        activities: [
+          {
+            name: 'Tour du Tambour + Tour de la Cloche',
+            desc: 'Les deux tours Ming qui scandaient le temps de la capitale. La Tour du Tambour (13h-17h sonore) est la plus impressionnante. Vue sur le lacis des hutongs alentour depuis le sommet.',
+            emoji: '🥁',
+            duration: '1h30',
+            price: 'CNY 20 chacune ou CNY 30 combiné',
+            maps: 'Drum Tower Beijing'
+          },
+          {
+            name: 'Balade hutongs à vélo 🚴',
+            desc: 'Le meilleur moyen d\'explorer les hutongs — ruelles traditionnelles que les piétons ne découvrent que partiellement. Quartier autour de Gulou, Beiluoguxiang et Fangjia Hutong.',
+            emoji: '🚲',
+            duration: '1h30',
+            price: 'CNY 20–30/h location',
+            maps: 'Hutong Bicycle Tour Beijing',
+            tips: 'Locations disponibles place Gulou. Application DiDi Bike ou station Mobike. Rester dans les petites ruelles.'
+          }
+        ]
+      },
+      {
+        time: '☀️ Après-midi — Sud de Beijing',
+        activities: [
+          {
+            name: 'Temple du Ciel (天坛) ⭐',
+            desc: 'Chef-d\'œuvre de l\'architecture Ming (1420). L\'Empereur venait y prier pour de bonnes récoltes. Le Hall de la Prière pour les Bonnes Récoltes (圜丘) est une des plus belles structures du monde. Parc immense où les Pékinois font du Tai Chi.',
+            emoji: '🏛️',
+            duration: '2h',
+            price: 'CNY 35 entrée + CNY 20 Hall principal',
+            maps: 'Temple of Heaven Beijing',
+            tips: 'Métro L5 Tiantandongmen, 40 min depuis Gulou. Entrer par la porte est pour le circuit logique.'
+          },
+          {
+            name: 'Qianmen Street',
+            desc: 'Rue commerçante historique au pied de la Porte Qianmen, au sud de Tiananmen. Mélange de marques chinoises historiques et boutiques modernes. Architecture Qing reconstituée.',
+            emoji: '🏮',
+            duration: '1h',
+            price: 'Gratuit',
+            maps: 'Qianmen Street Beijing'
+          }
+        ]
+      },
+      {
+        time: '🌙 Soirée',
+        activities: [
+          {
+            name: 'Spectacle Acrobatique de Beijing (optionnel)',
+            desc: 'Tradition pluriséculaire chinoise portée à la perfection. Équilibrisme, jonglage de chaises, motards dans une sphère. Chaoyang Theatre ou Tiandi Theatre sont les deux références.',
+            emoji: '🎪',
+            duration: '1h30',
+            price: 'CNY 200–380/pers selon placement',
+            maps: 'Chaoyang Acrobatics Theatre Beijing',
+            tips: 'Réservation fortement conseillée. Spectacles généralement à 19h30 et 21h15.'
+          }
+        ]
+      }
+    ],
+    checklist: ['Spectacle acrobatique : réserver à l\'avance si souhaité', 'Prévoir gants pour vélo (froid matinal)']
+  },
+
+  j18: {
+    id: 'j18', num: 18, cityId: 'bj',
+    title: 'Départ vers Shanghai',
+    date: 'Dimanche 22 novembre 2026',
+    type: 'tampon',
+    preview: ['Check-out Beijing', 'HSR → Shanghai ~4h30', 'Soirée Bund'],
+    tamponNote: 'Jour tampon transport. Train Beijing → Shanghai : ~4h30 en HSR. Option : Palais d\'Été le matin si départ après 11h.',
+    sections: [
+      {
+        time: '🌅 Matin optionnel',
+        activities: [
+          {
+            name: 'Palais d\'Été (颐和园) — Option si départ >11h',
+            desc: 'Vaste complexe impérial avec lac Kunming (3 km²), galerie de Peinture couverte (728m), Colline de la Longévité. Certains le considèrent plus beau que la Cité Interdite.',
+            emoji: '🏰',
+            duration: '2h minimum',
+            price: 'CNY 30',
+            maps: 'Summer Palace Beijing',
+            tips: 'Métro L4 Beigongmen, 30 min. Nécessite départ >11h30 depuis Beijing. Déconseillé si train du matin.'
+          }
+        ]
+      },
+      {
+        time: '🚄 Transport',
+        activities: [
+          {
+            name: 'HSR Beijing Sud → Shanghai Hongqiao',
+            desc: 'Le train le plus emprunté de Chine — ligne Jinghu ultra-rapide à 350 km/h. Traversée de la plaine centrale.',
+            emoji: '🚄',
+            duration: '~4h30',
+            price: 'CNY 550–700/pers (≈ 65–85€)',
+            maps: 'Beijing South Railway Station',
+            tips: 'Métro L4 vers Beijing Sud. Prévoir 30 min d\'avance en gare.'
+          }
+        ]
+      },
+      {
+        time: '🌆 Arrivée Shanghai',
+        activities: [
+          {
+            name: 'Gare Hongqiao → Hôtel Jing\'an / French Concession',
+            desc: 'Métro L2 ou L10 depuis Hongqiao.',
+            emoji: '🚇',
+            duration: '20–40 min',
+            price: 'CNY 5–8',
+            maps: 'Shanghai Hongqiao Railway Station'
+          },
+          {
+            name: 'The Bund — Première soirée Shanghai',
+            desc: 'La promenade la plus iconique d\'Asie. Façades coloniales Art Déco face au skyline futuriste de Pudong. La nuit c\'est magique — Perle d\'Orient, Shanghai Tower, SWFC illuminés.',
+            emoji: '🌃',
+            duration: '1h',
+            price: 'Gratuit',
+            maps: 'The Bund Shanghai'
+          }
+        ]
+      }
+    ],
+    checklist: ['HSR Beijing → Shanghai : billet en main', 'Shanghai Tower : réserver billets en ligne si possible']
+  },
+
+  j19: {
+    id: 'j19', num: 19, cityId: 'sh',
+    title: 'Arrivée Shanghai + The Bund',
+    date: 'Dimanche 22 novembre 2026',
+    type: 'tampon',
+    preview: ['Arrivée Shanghai', 'The Bund nocturne', 'Nanjing Lu'],
+    tamponNote: 'Combiné avec J18 transport. Voir détails dans J18.',
+    sections: []
+  },
+
+  j20: {
+    id: 'j20', num: 20, cityId: 'sh',
+    title: 'Bund + Pudong + Skyline',
+    date: 'Lundi 23 novembre 2026',
+    type: 'visite',
+    preview: ['The Bund matin', 'Shanghai Tower', 'Vue nocturne Bund'],
+    sections: [
+      {
+        time: '🌅 Matin',
+        activities: [
+          {
+            name: 'The Bund — Balade matinale',
+            desc: 'L\'axe de 1,5 km longeant le Huangpu. 52 bâtiments coloniaux (britannique, français, américain) face au Pudong ultra-moderne — contraste saisissant. Le matin, moins bondé, lumière dorée sur les façades.',
+            emoji: '🏛️',
+            duration: '1h',
+            price: 'Gratuit',
+            maps: 'The Bund Shanghai'
+          },
+          {
+            name: 'Rockbund Art Museum',
+            desc: 'Museum d\'art contemporain dans un bâtiment Art Déco restauré au nord du Bund. Expositions temporaires de grande qualité.',
+            emoji: '🎨',
+            duration: '1h',
+            price: 'CNY 50–100',
+            maps: 'Rockbund Art Museum Shanghai'
+          }
+        ]
+      },
+      {
+        time: '☀️ Après-midi — Pudong',
+        activities: [
+          {
+            name: 'Ferry Bund → Pudong',
+            desc: 'Traversée en 10 min du Huangpu sur un petit ferry bondé de locaux. Vue unique sur les deux rives. Une des traversées les plus spectaculaires du monde.',
+            emoji: '⛴️',
+            duration: '10 min',
+            price: 'CNY 2',
+            maps: 'Jinling Ferry Terminal Shanghai'
+          },
+          {
+            name: 'Shanghai Tower — Observatory ⭐',
+            desc: '2e plus haute tour du monde (632m). L\'observatoire au 118e étage offre une vue à 360° sur Shanghai. Ascenseur le plus rapide du monde (20 m/s). Plateforme extérieure à 546m (si conditions le permettent).',
+            emoji: '🏙️',
+            duration: '2h',
+            price: 'CNY 220',
+            maps: 'Shanghai Tower Observatory',
+            tips: 'Réserver en ligne pour éviter les files. Éviter les jours brumeux — vérifier météo.'
+          },
+          {
+            name: 'Lujiazui — Quartier financier',
+            desc: 'Balade dans le Manhattan asiatique. Oriental Pearl Tower (vue des années 90, kitsch mais iconique), SWFC (ouvreur de bouteille géant), IFC. Un concentré d\'architecture futuriste.',
+            emoji: '🌆',
+            duration: '45 min',
+            price: 'Gratuit (balade extérieure)',
+            maps: 'Lujiazui Financial District Shanghai'
+          }
+        ]
+      },
+      {
+        time: '🌙 Soirée',
+        activities: [
+          {
+            name: 'The Bund Nocturne — Vue sur Pudong',
+            desc: 'La meilleure vue de Shanghai : sur le Bund, face à Pudong illuminé. Entre 19h et 21h les buildings s\'allument progressivement. Photo parfaite.',
+            emoji: '✨',
+            duration: '1h',
+            price: 'Gratuit',
+            maps: 'The Bund Night View Shanghai',
+            tips: 'Prendre position face à la Pearl Tower / Shanghai Tower. Trépied si vous avez.'
+          }
+        ]
+      }
+    ]
+  },
+
+  j21: {
+    id: 'j21', num: 21, cityId: 'sh',
+    title: 'French Concession + Yu Garden',
+    date: 'Mardi 24 novembre 2026',
+    type: 'visite',
+    preview: ['Tianzifang', 'French Concession', 'Yu Garden', 'Xintiandi'],
+    sections: [
+      {
+        time: '🌅 Matin — French Concession',
+        activities: [
+          {
+            name: 'Tianzifang (田子坊)',
+            desc: 'Labyrinthe de ruelles d\'une ancienne résidence de travailleurs reconvertie en galeries d\'art, boutiques de créateurs, ateliers et cafés. Plus authentique et moins commerciale que Xintiandi.',
+            emoji: '🎭',
+            duration: '1h30',
+            price: 'Gratuit (achats selon envie)',
+            maps: 'Tianzifang Shanghai',
+            tips: 'Métro L9 Dapuqiao. Meilleur le matin avant l\'afflence. Idéal pour souvenirs de qualité.'
+          },
+          {
+            name: 'French Concession — Fuxing Lu + Wukang Road',
+            desc: 'Le plus beau quartier de Shanghai pour la flânerie. Platanes centenaires, villas Art Déco, cafés de qualité. Wukang Road (Wukang Mansion en fond) est la rue la plus photographiée de Shanghai.',
+            emoji: '🌳',
+            duration: '1h30',
+            price: 'Gratuit',
+            maps: 'Wukang Road Shanghai French Concession',
+            tips: 'La Wukang Mansion (ancienne ambassade) est le bâtiment iconique en forme d\'arc. Nombreux cafés de spécialité dans le quartier.'
+          }
+        ]
+      },
+      {
+        time: '☀️ Après-midi',
+        activities: [
+          {
+            name: 'Xintiandi (新天地)',
+            desc: 'Quartier de shikumen (maisons à portail en pierre) restaurées, converti en complex haut de gamme de restaurants et bars. Ambiance internationale, terrasses, déjeuner agréable.',
+            emoji: '🍽️',
+            duration: '45 min déjeuner + balade',
+            price: 'CNY 80–200/pers déjeuner',
+            maps: 'Xintiandi Shanghai'
+          },
+          {
+            name: 'Yu Garden (豫园) + Bazaar ⭐',
+            desc: 'Jardin Ming de 1559, l\'un des plus beaux jardins classiques de Chine. Pavillons, étangs, rochers de Taihu, galeries couvertes. Le Bazaar autour est un immense marché touristique mais animé.',
+            emoji: '🏡',
+            duration: '2h',
+            price: 'CNY 40 entrée jardin / bazaar gratuit',
+            maps: 'Yu Garden Shanghai',
+            tips: 'Métro L14 ou L10 Yuyuan. Jardin à visiter tôt (avant 15h en semaine). Spot phare : salon de thé sur l\'étang (Huxinting Tea House).'
+          }
+        ]
+      },
+      {
+        time: '🌙 Soirée',
+        activities: [
+          {
+            name: 'Soirée Xintiandi — Bars et restaurants',
+            desc: 'Terrasses animées de Xintiandi. Excellente sélection de restaurants (chinois moderne, japonais, français, cocktails). Ambiance cosmopolite typiquement shanghaïenne.',
+            emoji: '🍸',
+            duration: 'Libre',
+            price: 'Cocktails CNY 60–120, dîner CNY 100–250/pers',
+            maps: 'Xintiandi Bars Shanghai'
+          }
+        ]
+      }
+    ]
+  },
+
+  j22: {
+    id: 'j22', num: 22, cityId: 'sh',
+    title: 'Zhujiajiao + Jing\'an',
+    date: 'Mercredi 25 novembre 2026',
+    type: 'excursion',
+    preview: ['Zhujiajiao Water Town', 'Jing\'an Temple', 'Rooftop bar Bund'],
+    sections: [
+      {
+        time: '🌅 Matin — Excursion',
+        activities: [
+          {
+            name: 'Bus People\'s Square → Zhujiajiao',
+            desc: 'Bus direct depuis la gare routière adjacente à People\'s Square.',
+            emoji: '🚌',
+            duration: '1h',
+            price: 'CNY 12/pers A/R / Taxi groupe ~CNY 200 A/R',
+            maps: 'People\'s Square Bus Station Shanghai'
+          },
+          {
+            name: 'Zhujiajiao Water Town (朱家角) ⭐',
+            desc: 'Ville sur l\'eau du XVIe siècle avec canaux, 36 ponts de pierre, maisons à arcades reflétées dans l\'eau. Atmosphère paisible très différente de Shanghai. Balades en barque, échoppes d\'artisanat, temples.',
+            emoji: '⛵',
+            duration: '3h',
+            price: 'Entrée libre — attractions intérieures CNY 80 pass',
+            maps: 'Zhujiajiao Water Town Shanghai',
+            tips: 'Barque sur les canaux : CNY 80–100 pour 30 min (à partager en groupe). Spécialité : pattes de canard braisées et gâteaux de riz.'
+          }
+        ]
+      },
+      {
+        time: '☀️ Après-midi',
+        activities: [
+          {
+            name: 'Retour Shanghai + Jing\'an Temple (静安寺)',
+            desc: 'Temple bouddhiste actif au cœur du quartier le plus moderne de Shanghai. Contraste saisissant : temple doré ceinturé de tours de verre. Façade en or et jade impressionnante.',
+            emoji: '🛕',
+            duration: '1h',
+            price: 'CNY 50',
+            maps: 'Jing\'an Temple Shanghai',
+            tips: 'Métro L2/L7 Jing\'an Temple. À côté : Jing\'an Park pour souffler.'
+          },
+          {
+            name: 'Nanjing Road West — Architecture coloniale',
+            desc: 'La partie ouest de Nanjing Lu, plus résidentielle et élégante que l\'est. Belles architectures Art Déco et Shikumen. Shopping de qualité (IFC, Jing\'an Kerry Centre).',
+            emoji: '🏙️',
+            duration: '1h',
+            price: 'Gratuit',
+            maps: 'West Nanjing Road Shanghai'
+          }
+        ]
+      },
+      {
+        time: '🌙 Dernière soirée Shanghai',
+        activities: [
+          {
+            name: 'Bar Rooftop — Vue sur le Bund / Pudong',
+            desc: 'Dernière soirée mémorable avec vue panoramique. Bar Rouge (Bund 18, dernier étage), New Height (Bund 3), Vue (Hyatt Pudong côté). Cocktails face au skyline illuminé.',
+            emoji: '🍹',
+            duration: '2h+',
+            price: 'Cocktails CNY 80–150, minimum souvent CNY 200',
+            maps: 'Bar Rouge Bund Shanghai',
+            tips: 'Bar Rouge = ambiance club, vue Bund → Pudong. New Height = plus calme, cuisine. Réservation recommandée week-end.'
+          }
+        ]
+      }
+    ],
+    checklist: ['Rooftop bar : réservation conseillée pour la dernière soirée']
+  },
+
+  j23: {
+    id: 'j23', num: 23, cityId: 'sh',
+    title: 'Départ Shanghai → Hong Kong',
+    date: 'Jeudi 26 novembre 2026',
+    type: 'tampon',
+    preview: ['Check-out Shanghai', 'Maglev → aéroport', 'Vol → Hong Kong'],
+    tamponNote: 'Jour tampon départ. Vol Shanghai → Hong Kong : ~2h30. Maglev depuis Pudong = expérience en soi (430 km/h).',
+    sections: [
+      {
+        time: '🌅 Matin',
+        activities: [
+          {
+            name: 'Check-out + Transport vers l\'aéroport',
+            desc: 'Depuis Pudong (PVG) : Maglev depuis Longyang Road. Depuis Hongqiao (SHA) : métro L2/L10.',
+            emoji: '🧳',
+            duration: '—',
+            price: '—',
+            maps: 'Shanghai Pudong International Airport'
+          },
+          {
+            name: 'Maglev Shanghai — Expérience 430 km/h 🚄',
+            desc: 'Train à lévitation magnétique reliant l\'aéroport Pudong au centre en 8 minutes à 430 km/h. L\'un des rares Maglev commerciaux au monde. Sensation grisante, vibration minimale.',
+            emoji: '⚡',
+            duration: '8 min !',
+            price: 'CNY 50 (CNY 40 avec billet d\'avion)',
+            maps: 'Shanghai Maglev Train Longyang Road',
+            tips: 'Si vol depuis Pudong PVG seulement. Maglev opère depuis Longyang Road (L2/L7).'
+          }
+        ]
+      },
+      {
+        time: '✈️ Vol retour',
+        activities: [
+          {
+            name: 'Vol Shanghai → Hong Kong',
+            desc: 'Dernier vol de la tournée. Arrivée à HKG.',
+            emoji: '✈️',
+            duration: '~2h30',
+            price: 'CNY 400–900/pers',
+            maps: 'Shanghai Pudong International Airport'
+          }
+        ]
+      }
+    ]
+  },
+
+  j24: {
+    id: 'j24', num: 24, cityId: 'hk2',
+    title: 'Hong Kong — Dernière nuit',
+    date: 'Jeudi 26 novembre 2026',
+    type: 'tampon',
+    preview: ['Arrivée HK', 'Dim sum', 'Soirée TST'],
+    tamponNote: 'Retour à Hong Kong pour la nuit. Journée de détente après 20 jours de voyage.',
+    sections: [
+      {
+        time: '🌆 Soirée',
+        activities: [
+          {
+            name: 'Dim Sum — Dîner de détente',
+            desc: 'Se poser dans un bon restaurant cantonais pour dim sum ou repas complet. Hong Kong a la meilleure cuisine cantonaise au monde.',
+            emoji: '🥟',
+            duration: '1h30',
+            price: 'HKD 150–300/pers',
+            maps: 'Dim Sum restaurant Tsim Sha Tsui'
+          },
+          {
+            name: 'Promenade TST Waterfront — Dernière fois',
+            desc: 'Bouclage du voyage là où il a commencé. Symphony of Lights à 20h si l\'énergie est là.',
+            emoji: '🌃',
+            duration: '45 min',
+            price: 'Gratuit',
+            maps: 'Tsim Sha Tsui Promenade Hong Kong'
+          }
+        ]
+      }
+    ]
+  },
+
+  j25: {
+    id: 'j25', num: 25, cityId: 'hk2',
+    title: 'Départs retour France',
+    date: 'Vendredi 27 novembre 2026',
+    type: 'tampon',
+    preview: ['Couple via Francfort', 'Amies via CDG', 'Airport Express'],
+    tamponNote: 'Dernier jour. Couple via Francfort, amies via Paris CDG. Vérifier heures de vol.',
+    sections: [
+      {
+        time: '🌅 Matin',
+        activities: [
+          {
+            name: 'Petit-déjeuner + Check-out',
+            desc: 'Dernier repas à Hong Kong. Pineapple bun + milk tea dans un cha chaan teng local — l\'expérience HK authentique.',
+            emoji: '🍞',
+            duration: '45 min',
+            price: 'HKD 40–80/pers',
+            maps: 'Cha Chaan Teng Tsim Sha Tsui'
+          },
+          {
+            name: 'Airport Express → HKG',
+            desc: 'Transport définitif vers l\'aéroport. Possibilité de faire le check-in en ville à Kowloon Station pour ne pas porter les bagages dans l\'avion.',
+            emoji: '🚄',
+            duration: '24 min',
+            price: 'HKD 105/pers',
+            maps: 'Kowloon Station Airport Express Hong Kong',
+            tips: 'City check-in disponible jusqu\'à 1h avant le départ du train. Bagages déposés, liberté les mains libres jusqu\'au gate.'
+          }
+        ]
+      }
+    ]
+  }
+};
+
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+let currentView = 'home';
+let currentCity = null;
+let currentDay = null;
+let checkedItems = JSON.parse(localStorage.getItem('checkedItems') || '{}');
+
+// ═══════════════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════════════
+
+function openApp() {
+  document.getElementById('cover').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  document.getElementById('app').style.flexDirection = 'column';
+  renderHome();
+  showView('home');
+}
+
+function showView(view) {
+  ['home-view','city-view','day-view','info-view'].forEach(v => {
+    document.getElementById(v).classList.remove('active');
+  });
+  ['nav-home','nav-info'].forEach(b => {
+    document.getElementById(b) && document.getElementById(b).classList.remove('active');
+  });
+
+  currentView = view;
+  const el = document.getElementById(view + '-view');
+  if (el) { el.classList.add('active'); el.classList.add('view-transition'); }
+
+  if (view === 'home') {
+    document.getElementById('nav-home').classList.add('active');
+    setTopbar('Voyage Chine 🐉', 'Nov 2026');
+    document.getElementById('backBtn').style.opacity = '0';
+  } else if (view === 'info') {
+    document.getElementById('nav-info').classList.add('active');
+    setTopbar('Infos pratiques', 'Transport & paiements');
+    document.getElementById('backBtn').style.opacity = '0';
+    renderInfo();
+  } else {
+    document.getElementById('backBtn').style.opacity = '1';
+  }
+}
+
+function setTopbar(city, date) {
+  document.getElementById('topbarCity').textContent = city;
+  document.getElementById('topbarDate').textContent = date;
+}
+
+function goBack() {
+  if (currentView === 'day-view') { openCity(currentCity.id); }
+  else if (currentView === 'city-view') { showView('home'); }
+  else { showView('home'); }
+}
+
+// ─── HOME ───
+function renderHome() {
+  const grid = document.getElementById('citiesGrid');
+  grid.innerHTML = CITIES.map(c => `
+    <div class="city-card" onclick="openCity('${c.id}')">
+      <div class="city-card-bg" style="background-image:url('${c.bg}')"></div>
+      <div class="city-card-overlay"></div>
+      <div class="city-card-days">${c.daysLabel}</div>
+      <div class="city-card-content">
+        <span class="city-card-emoji">${c.emoji}</span>
+        <div class="city-card-name">${c.name}</div>
+        <div class="city-card-dates">${c.dates}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ─── CITY ───
+function openCity(cityId) {
+  currentCity = CITIES.find(c => c.id === cityId);
+  if (!currentCity) return;
+
+  document.getElementById('cityBg').style.backgroundImage = `url('${currentCity.bg}')`;
+  document.getElementById('cityEmoji').textContent = currentCity.emoji;
+  document.getElementById('cityName').textContent = currentCity.name;
+  document.getElementById('cityDates').textContent = currentCity.dates;
+
+  const w = currentCity.weather;
+  document.getElementById('cityWeather').innerHTML = `
+    <div>
+      <div class="weather-temp">${w.temp}</div>
+      <div class="weather-desc">${w.desc}</div>
+    </div>
+    <div style="flex:1;border-left:1px solid rgba(255,255,255,.1);padding-left:16px;">
+      <div class="weather-tips">👗 ${w.tips}</div>
+      <div class="weather-tips" style="margin-top:4px;">🏨 Hôtel idéal : <strong style="color:var(--gold)">${currentCity.hotel.rec}</strong></div>
+    </div>
+  `;
+
+  const list = document.getElementById('daysList');
+  list.innerHTML = currentCity.days.map(dayId => {
+    const d = DAYS[dayId];
+    if (!d) return '';
+    const tagClass = d.type === 'tampon' ? 'tag-tampon' : d.type === 'excursion' ? 'tag-excursion' : 'tag-visite';
+    const tagLabel = d.type === 'tampon' ? '🔄 Tampon' : d.type === 'excursion' ? '🗺 Excursion' : '✨ Visite';
+    const numClass = d.type === 'tampon' ? 'tampon' : '';
+    return `
+      <div class="day-card" onclick="openDay('${dayId}')">
+        <div class="day-card-header">
+          <div class="day-num ${numClass}">J${d.num}</div>
+          <div class="day-card-info">
+            <div class="day-card-title">${d.title}</div>
+            <div class="day-card-meta">${d.date}</div>
+          </div>
+          <div class="day-card-tag ${tagClass}">${tagLabel}</div>
+        </div>
+        ${d.preview && d.preview.length ? `
+        <div class="day-card-preview">
+          ${d.preview.map(p => `<span class="preview-pill">${p}</span>`).join('')}
+        </div>` : ''}
+      </div>
+    `;
+  }).join('');
+
+  setTopbar(currentCity.name, currentCity.dates);
+  document.getElementById('backBtn').style.opacity = '1';
+  showView('city');
+}
+
+// ─── DAY ───
+function openDay(dayId) {
+  const d = DAYS[dayId];
+  if (!d) return;
+  currentDay = d;
+
+  document.getElementById('dayHeroNum').textContent = `Jour ${d.num} — ${currentCity ? currentCity.name : ''}`;
+  document.getElementById('dayHeroTitle').textContent = d.title;
+  document.getElementById('dayHeroDate').textContent = d.date;
+
+  const container = document.getElementById('daySections');
+  let html = '';
+
+  if (d.tamponNote) {
+    html += `<div class="tampon-banner">⏳ <strong>Jour tampon :</strong> ${d.tamponNote}</div>`;
+  }
+
+  if (!d.sections || d.sections.length === 0) {
+    html += `<div style="text-align:center;padding:40px 20px;color:var(--smoke);font-size:14px;">Voir le jour précédent pour le détail de transport et arrivée.</div>`;
+  }
+
+  d.sections.forEach(section => {
+    html += `<div>
+      <div class="section-label">${section.time}</div>`;
+
+    section.activities.forEach(act => {
+      const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(act.maps || act.name)}`;
+      html += `
+        <div class="activity-card">
+          <div class="activity-img-emoji">${act.emoji || '📍'}</div>
+          <div class="activity-body">
+            <div class="activity-name">${act.name}</div>
+            <div class="activity-desc">${act.desc}</div>
+            <div class="activity-meta">
+              ${act.duration ? `<span class="meta-chip chip-time">⏱ ${act.duration}</span>` : ''}
+              ${act.price ? `<span class="meta-chip ${act.price.toLowerCase().includes('gratuit') || act.price.toLowerCase().includes('free') ? 'chip-free' : 'chip-price'}">
+                ${act.price.toLowerCase().includes('gratuit') || act.price.toLowerCase().includes('free') ? '🆓' : '💰'} ${act.price}
+              </span>` : ''}
+            </div>
+            ${act.tips ? `<div class="transport-card"><div class="transport-title">💡 Conseil</div><div class="transport-detail">${act.tips}</div></div>` : ''}
+            <a class="btn-maps" href="${mapsUrl}" target="_blank" rel="noopener">
+              <span class="btn-maps-icon">📍</span> Ouvrir dans Google Maps
+            </a>
+          </div>
+        </div>`;
+    });
+    html += '</div>';
+  });
+
+  if (d.checklist && d.checklist.length) {
+    html += `<div class="checklist-card">
+      <div class="checklist-title">✅ Check-list du jour</div>
+      ${d.checklist.map((item, i) => {
+        const key = `${dayId}-${i}`;
+        const done = checkedItems[key];
+        return `<div class="checklist-item ${done ? 'done' : ''}" onclick="toggleCheck('${dayId}', ${i})">
+          <div class="check-box">${done ? '✓' : ''}</div>
+          <span>${item}</span>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }
+
+  container.innerHTML = html;
+  setTopbar(d.title, `Jour ${d.num}`);
+  document.getElementById('backBtn').style.opacity = '1';
+  showView('day');
+}
+
+function toggleCheck(dayId, idx) {
+  const key = `${dayId}-${idx}`;
+  checkedItems[key] = !checkedItems[key];
+  localStorage.setItem('checkedItems', JSON.stringify(checkedItems));
+  openDay(dayId);
+}
+
+// ─── INFO ───
+function renderInfo() {
+  document.getElementById('infoSections').innerHTML = `
+    <div class="info-section">
+      <div class="warning-banner">
+        <div class="warning-icon">🔒</div>
+        <div><strong>VPN obligatoire</strong> — Google, Instagram, WhatsApp, Facebook sont bloqués en Chine continentale. Télécharger et tester ExpressVPN ou NordVPN <strong>AVANT de partir</strong>.</div>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <div class="info-section-title">🚇 Transports par ville</div>
+      <table class="info-table">
+        <tr><th>Ville</th><th>Carte / App</th><th>Apple Pay</th><th>Prix moyen</th></tr>
+        <tr><td><strong>Hong Kong</strong></td><td>Octopus Card</td><td>✅ Oui</td><td>HKD 7–22/trajet</td></tr>
+        <tr><td><strong>Chongqing</strong></td><td>Alipay QR</td><td>✅ Via Alipay</td><td>CNY 2–7/trajet</td></tr>
+        <tr><td><strong>Xi'an</strong></td><td>Alipay QR</td><td>✅ Via Alipay</td><td>CNY 2–6/trajet</td></tr>
+        <tr><td><strong>Beijing</strong></td><td>Alipay / Carte locale</td><td>⚠️ Partiel</td><td>CNY 3–6/trajet</td></tr>
+        <tr><td><strong>Shanghai</strong></td><td>Alipay / Carte locale</td><td>⚠️ Partiel</td><td>CNY 3–8/trajet</td></tr>
+      </table>
+    </div>
+
+    <div class="info-section">
+      <div class="info-section-title">🚄 Liaisons inter-villes</div>
+      <table class="info-table">
+        <tr><th>Trajet</th><th>Mode</th><th>Durée</th><th>Prix/pers</th></tr>
+        <tr><td>HK → Chongqing</td><td>✈️ Avion</td><td>~4h porte/porte</td><td>€50–110</td></tr>
+        <tr><td>Chongqing → Xi'an</td><td>🚄 HSR</td><td>~5h30</td><td>€25–35</td></tr>
+        <tr><td>Xi'an → Beijing</td><td>🚄 HSR</td><td>~5h</td><td>€55–80</td></tr>
+        <tr><td>Beijing → Shanghai</td><td>🚄 HSR</td><td>~4h30</td><td>€65–85</td></tr>
+        <tr><td>Shanghai → HK</td><td>✈️ Avion</td><td>~4h porte/porte</td><td>€50–110</td></tr>
+      </table>
+    </div>
+
+    <div class="info-section">
+      <div class="info-section-title">💳 Paiements</div>
+      <table class="info-table">
+        <tr><th>Contexte</th><th>Moyen recommandé</th></tr>
+        <tr><td>Chine continentale — tout</td><td><strong>Alipay</strong> (QR code universel)</td></tr>
+        <tr><td>Hong Kong</td><td><strong>Octopus Card</strong> + carte Visa/MC</td></tr>
+        <tr><td>Hôtels / grands restaurants</td><td>Carte bancaire internationale</td></tr>
+        <tr><td>Marchés / vendeurs de rue</td><td>Cash CNY (~500–1000 CNY secours)</td></tr>
+        <tr><td>Hong Kong marchés</td><td>Cash HKD (~500 HKD secours)</td></tr>
+      </table>
+    </div>
+
+    <div class="info-section">
+      <div class="info-section-title">📱 Apps essentielles iPhone</div>
+      <div class="app-item">
+        <div class="app-icon">💸</div>
+        <div><div class="app-name">Alipay</div><div class="app-desc">Paiement universel en Chine — activer la version internationale avant le départ</div></div>
+        <div class="app-badge badge-critical">Critique</div>
+      </div>
+      <div class="app-item">
+        <div class="app-icon">🔒</div>
+        <div><div class="app-name">VPN (ExpressVPN / NordVPN)</div><div class="app-desc">Accès Google, WhatsApp, Instagram en Chine continentale. TÉLÉCHARGER EN FRANCE.</div></div>
+        <div class="app-badge badge-critical">Critique</div>
+      </div>
+      <div class="app-item">
+        <div class="app-icon">🗺️</div>
+        <div><div class="app-name">Amap 高德地图</div><div class="app-desc">Navigation en Chine continentale (Google Maps ne marche pas bien). Données précises.</div></div>
+        <div class="app-badge badge-critical">Critique</div>
+      </div>
+      <div class="app-item">
+        <div class="app-icon">🗺️</div>
+        <div><div class="app-name">Google Maps</div><div class="app-desc">Pour Hong Kong uniquement. Télécharger les cartes offline HK avant le départ.</div></div>
+        <div class="app-badge badge-useful">Utile</div>
+      </div>
+      <div class="app-item">
+        <div class="app-icon">🎫</div>
+        <div><div class="app-name">Trip.com</div><div class="app-desc">Réservation trains HSR, hôtels, activités. Interface en français disponible.</div></div>
+        <div class="app-badge badge-useful">Utile</div>
+      </div>
+      <div class="app-item">
+        <div class="app-icon">💬</div>
+        <div><div class="app-name">WeChat</div><div class="app-desc">Communication avec contacts locaux, paiements secondaires. Utile si vous contactez des locaux.</div></div>
+        <div class="app-badge badge-useful">Utile</div>
+      </div>
+      <div class="app-item">
+        <div class="app-icon">📖</div>
+        <div><div class="app-name">Pleco</div><div class="app-desc">Dictionnaire et traduction chinois-français offline. Reconnaissance d'écriture.</div></div>
+        <div class="app-badge badge-optional">Optionnel</div>
+      </div>
+      <div class="app-item">
+        <div class="app-icon">🚕</div>
+        <div><div class="app-name">DiDi</div><div class="app-desc">Uber chinois. Interface en anglais. Accepte Alipay et cartes internationales.</div></div>
+        <div class="app-badge badge-optional">Optionnel</div>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <div class="info-section-title">🌡️ Météo par ville — Novembre</div>
+      <table class="info-table">
+        <tr><th>Ville</th><th>Températures</th><th>Tenue conseillée</th></tr>
+        <tr><td>Hong Kong</td><td>22–26°C</td><td>T-shirt + veste légère soir</td></tr>
+        <tr><td>Chongqing</td><td>13–18°C</td><td>Couches + imperméable</td></tr>
+        <tr><td>Xi'an</td><td>5–12°C</td><td>Doudoune + bonnet + gants</td></tr>
+        <tr><td>Beijing</td><td>3–10°C</td><td>Grosse doudoune + gants</td></tr>
+        <tr><td>Shanghai</td><td>10–16°C</td><td>Manteau chaud + écharpe</td></tr>
+      </table>
+    </div>
+
+    <div class="info-section">
+      <div class="info-section-title">⚠️ Réservations prioritaires</div>
+      <div class="checklist-card">
+        <div class="checklist-title">À faire MAINTENANT</div>
+        ${[
+          'Vol HK → Chongqing (11 nov) — réserver maintenant',
+          'HSR Chongqing → Xi\'an (15 nov)',
+          'HSR Xi\'an → Beijing (18 nov)',
+          'HSR Beijing → Shanghai (22 nov)',
+          'Vol Shanghai → HK (26 nov)',
+          'Cité Interdite Beijing — dpm.org.cn (QUOTA JOURNALIER)',
+          'Armée de Terre Cuite Xi\'an (QUOTA JOURNALIER)',
+          'Shaanxi History Museum Xi\'an (gratuit mais limité)',
+          'Peak Tram Hong Kong (éviter 1h de queue)',
+          'Ngong Ping 360 Crystal Cabin'
+        ].map((item, i) => {
+          const key = `global-prio-${i}`;
+          const done = checkedItems[key];
+          return `<div class="checklist-item ${done ? 'done' : ''}" onclick="toggleGlobalCheck('global-prio-${i}')">
+            <div class="check-box">${done ? '✓' : ''}</div>
+            <span>${item}</span>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+
+    <div style="text-align:center;padding:20px;color:var(--smoke);font-size:11px;line-height:1.6;">
+      ⚠️ Prix indicatifs — vérifier avant le voyage.<br>
+      Carnet généré pour le voyage Nov 2026 · 4 voyageurs<br>
+      <br>Made with ❤️ by Claude
+    </div>
+  `;
+}
+
+function toggleGlobalCheck(key) {
+  checkedItems[key] = !checkedItems[key];
+  localStorage.setItem('checkedItems', JSON.stringify(checkedItems));
+  renderInfo();
+}
+
+// ═══════════════ INIT ═══════════════
+window.addEventListener('DOMContentLoaded', () => {
+  renderHome();
+});
+</script>
+</body>
+</html>
